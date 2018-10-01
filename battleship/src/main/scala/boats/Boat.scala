@@ -1,0 +1,5 @@
+package boats
+
+class Boat {
+    
+}
