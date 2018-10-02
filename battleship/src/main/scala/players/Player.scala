@@ -6,7 +6,7 @@ import helpers.DisplayHelper
 import game.GameSettings
 
 abstract class Player(val name: String, val boats: List[Boat]) {
-    def askForBoats(): Player
+    def askForBoats(gs: GameSettings): Player
 
-    def askForBoat(otherBoats: List[Boat], size: Int): Boat
+    def askForBoat(otherBoats: List[Boat], size: Int, gs: GameSettings): Boat
 }

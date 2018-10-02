@@ -8,20 +8,23 @@ import game.Game
 import game.GameSettings
 
 object Main extends App {
-    DisplayHelper.rules()
+
+    val gs: GameSettings = GameSettings()
+
+    DisplayHelper.rules(gs)
 
     val emptyPlayer1: Player = UserPlayer("Player 1")
     val emptyPlayer2: Player = UserPlayer("Player 2")
 
-    val player1: Player = emptyPlayer1.askForBoats()
-    val player2: Player = emptyPlayer2.askForBoats()
+    val player1: Player = emptyPlayer1.askForBoats(gs)
+    val player2: Player = emptyPlayer2.askForBoats(gs)
 
     val game: Game = Game(player1, player2, 1)
-    val gs: GameSettings = GameSettings()
+    
 
     mainLoop(game, gs)
 
     def mainLoop(game: Game, gs: GameSettings){
-        println(gs)
+        
     }
 }

@@ -8,9 +8,9 @@ case class Boat(squares: List[Square]) {
 }
 
 object Boat {
-    def apply(size: Int, headx: Int, heady: Int, direction: String): Option[Boat] = {
+    def apply(size: Int, headx: Int, heady: Int, direction: String, gs: GameSettings): Option[Boat] = {
         val squares: List[Square] = createSquareList(size, direction, headx, heady)
-        val squareOut: Boolean = squares.filter((s) => s.x < 0 || s.y < 0 || s.x > GameSettings.gridSize || s.y > GameSettings.gridSize).length > 0
+        val squareOut: Boolean = squares.filter((s) => s.x < 0 || s.y < 0 || s.x > gs.gridSize || s.y > gs.gridSize).length > 0
         if(squareOut){
             DisplayHelper.boatOutGrid()
             None 

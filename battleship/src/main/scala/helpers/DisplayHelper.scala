@@ -1,9 +1,10 @@
 package helpers
 
 import players.Player
+import game.GameSettings
 
 object DisplayHelper {
-    def rules(): Unit = {
+    def rules(gs: GameSettings): Unit = {
         println("Ici on écris les règles")
     } 
 
@@ -17,5 +18,9 @@ object DisplayHelper {
 
     def errorCrossingBoat(): Unit = {
         println("The boat is crossing another, retry.")
+    }
+
+    def playerTurn(name: String): Unit = {
+        println(name + " turn :")
     }
 }
