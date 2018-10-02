@@ -19,12 +19,12 @@ object Main extends App {
     val player1: Player = emptyPlayer1.askForBoats(gs)
     val player2: Player = emptyPlayer2.askForBoats(gs)
 
-    val game: Game = Game(player1, player2, 1)
-    
+    val game: Game = Game(player1, player2)
 
     mainLoop(game, gs)
 
     def mainLoop(game: Game, gs: GameSettings){
-        
+        val player: Player = game.player1
+        DisplayHelper.grids(player, gs.gridSize)
     }
 }
