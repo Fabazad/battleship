@@ -10,4 +10,12 @@ object DisplayHelper {
     def grids(player: Player): Unit = {
         println("User grid")
     }
+
+    def boatOutGrid(): Unit = {
+        println("The boat is out of the grid, retry.")
+    }
+
+    def errorCrossingBoat(): Unit = {
+        println("The boat is crossing another, retry.")
+    }
 }
