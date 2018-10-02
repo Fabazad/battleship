@@ -24,8 +24,8 @@ object Boat {
             case 0 => Nil
             case _ => { 
                 direction match {
-                    case "T" => new Square(headx, heady, false)::(createSquareList(size-1, direction, headx, heady-1))
-                    case "B" => new Square(headx, heady, false)::(createSquareList(size-1, direction, headx, heady+1))
+                    case "T" => new Square(headx, heady, false)::(createSquareList(size-1, direction, headx, heady+1))
+                    case "B" => new Square(headx, heady, false)::(createSquareList(size-1, direction, headx, heady-1))
                     case "L" => new Square(headx, heady, false)::(createSquareList(size-1, direction, headx-1, heady))
                     case "R" => new Square(headx, heady, false)::(createSquareList(size-1, direction, headx+1, heady))
                 }
