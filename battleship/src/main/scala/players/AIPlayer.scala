@@ -1,5 +1,7 @@
 package players
 
-class AIPlayer extends Player{
+import boats.Boat
+
+class AIPlayer(override val boats: Array[Boat]) extends Player(boats){
     
 }

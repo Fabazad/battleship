@@ -1,5 +1,7 @@
 package players
 
-class Player {
-    
+import boats.Boat
+
+case class Player(val boats: Array[Boat]) {
+
 }
