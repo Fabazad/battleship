@@ -2,6 +2,7 @@ package helpers
 
 import players.Player
 import game.GameSettings
+import boats.Square
 
 object DisplayHelper {
     def rules(gs: GameSettings): Unit = {
@@ -21,29 +22,33 @@ object DisplayHelper {
     }
 
     def grids(player: Player, gridSize: Int): Unit = {
+        val boatSquares: List[Square] = player.boats.flatMap((b) => b.squares)
+
         println(player.name + " boat grid :")
-        def displayGrid(x: Int, y: Int, gridSize: Int): Unit = {
+        def displayGrid(x: Int, y: Int, gridSize: Int, boatSquares: List[Square]): Unit = {
             //Numbers on top
             if(x <= gridSize && y == gridSize+1){
                 print(" " + x)
-                displayGrid(x+1, y, gridSize)
+                displayGrid(x+1, y, gridSize, boatSquares)
             }
             //Numbers on right
             else if(x == gridSize+1 && y == gridSize+1){
                 println()
-                displayGrid(1,y-1, gridSize)
+                displayGrid(1, y-1, gridSize, boatSquares)
             }
             //Normal square
             else if(x < gridSize && y > 0){
-                print("| ")
-                displayGrid(x+1, y, gridSize)
+                if(boatSquares.filter((s) => s.x == x && s.y == y).length > 0) print("|x")
+                else print("| ")
+                displayGrid(x+1, y, gridSize, boatSquares)
             }
             //Last line square
             else if(x >= gridSize && y > 0 && y < gridSize+1){
-                println("| | " + y)
-                displayGrid(1, y-1, gridSize)
+                if(boatSquares.filter((s) => s.x == x && s.y == y).length > 0) println("|x| " + y)
+                else println("| | " + y)
+                displayGrid(1, y-1, gridSize, boatSquares)
             }
         }
-        displayGrid(1, gridSize+1, gridSize)
+        displayGrid(1, gridSize+1, gridSize, boatSquares)
     }
 }
