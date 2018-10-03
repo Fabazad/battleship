@@ -2,7 +2,7 @@ package helpers
 
 import players.Player
 import game.GameSettings
-import boats.Square
+import boats.Cell
 
 object DisplayHelper {
     def rules(): Unit = {
@@ -27,38 +27,38 @@ object DisplayHelper {
 
     def grids(player: Player): Unit = {
         val gridSize: Int = GameSettings.gridSize
-        val boatSquares: List[Square] = player.boats.flatMap((b) => b.squares)
+        val boatCells: List[Cell] = player.boats.flatMap((b) => b.cells)
 
         println(player.name + " boat grid :")
-        def displayGrid(x: Int, y: Int, gridSize: Int, boatSquares: List[Square]): Unit = {
+        def displayGrid(x: Int, y: Int, gridSize: Int, boatCells: List[Cell]): Unit = {
             //Numbers on top
             if(x <= gridSize && y == gridSize+1){
                 print(" " + x)
-                displayGrid(x+1, y, gridSize, boatSquares)
+                displayGrid(x+1, y, gridSize, boatCells)
             }
-            //Last top square
+            //Last top Cell
             else if(x == gridSize+1 && y == gridSize+1){
                 println()
-                displayGrid(1, y-1, gridSize, boatSquares)
+                displayGrid(1, y-1, gridSize, boatCells)
             }
-            //Normal square
+            //Normal Cell
             else if(x <= gridSize && y > 0){
-                val filteredSquares: List[Square] =  boatSquares.filter((s) => s.x == x && s.y == y)
-                if(filteredSquares.length > 0){
-                    val square: Square = filteredSquares.head
-                    print("|" + square.state)
+                val filteredCells: List[Cell] =  boatCells.filter((s) => s.x == x && s.y == y)
+                if(filteredCells.length > 0){
+                    val cell: Cell = filteredCells.head
+                    print("|" + cell.state)
                 }
                 else{
                     print("| ")
                 }
-                displayGrid(x+1, y, gridSize, boatSquares)
+                displayGrid(x+1, y, gridSize, boatCells)
             }
             //Numbers on right
             else if(x >= gridSize && y > 0 && y < gridSize+1){
                 println("| " + y)
-                displayGrid(1, y-1, gridSize, boatSquares)
+                displayGrid(1, y-1, gridSize, boatCells)
             }
         }
-        displayGrid(1, gridSize+1, gridSize, boatSquares)
+        displayGrid(1, gridSize+1, gridSize, boatCells)
     }
 }
