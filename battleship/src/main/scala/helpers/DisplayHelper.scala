@@ -22,7 +22,7 @@ object DisplayHelper {
     }
 
     def shotOutGrid(): Unit = {
-        println("The shot is out of the grid, retry.")
+        println("The shot is out of the grid. Retry.")
     }
 
     def shotSuccess(): Unit = {
@@ -39,6 +39,10 @@ object DisplayHelper {
 
     def playerWin(playerName: String): Unit = {
         println(playerName + " win the game !")
+    }
+
+    def alreadyShot(): Unit = {
+        println("You already shot this position. Retry.")
     }
 
     def grids(player: Player): Unit = {

@@ -41,7 +41,7 @@ extends Player(name, boats, sentShots, receivedShots){
     }
 
     override def shot(target: Player): Shot = {
-        val shot: Shot = UserPlayer.askForShot()
+        val shot: Shot = UserPlayer.askForShot(target)
         val targetCells: List[Cell] = target.boats.flatMap((b) => b.cells)
         val touched: Boolean = targetCells.filter((c) => c.x == shot.x && c.y == shot.y).length > 0
         if(touched) DisplayHelper.shotSuccess() else DisplayHelper.shotFailure()
@@ -80,14 +80,19 @@ object UserPlayer {
         new UserPlayer(name)
     }
 
-    def askForShot(): Shot = {
+    def askForShot(target: Player): Shot = {
         val x: Int = AskHelper.shotx()
         val y: Int = AskHelper.shoty()
         val gridSize = GameSettings.gridSize
         if(x < 0 || x > gridSize || y < 0 || y > gridSize){
             DisplayHelper.shotOutGrid()
-            askForShot()
-        }else{
+            askForShot(target)
+        }
+        else if(target.receivedShots.filter((rs) => rs.x == x || rs.y == y).length > 0){
+            DisplayHelper.alreadyShot()
+            askForShot(target)
+        }
+        else{
             Shot(x, y, false)
         }
     }
