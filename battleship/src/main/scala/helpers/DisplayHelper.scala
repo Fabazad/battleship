@@ -5,7 +5,7 @@ import game.GameSettings
 import boats.Square
 
 object DisplayHelper {
-    def rules(gs: GameSettings): Unit = {
+    def rules(): Unit = {
         println("Ici on écris les règles")
     } 
 
@@ -25,7 +25,8 @@ object DisplayHelper {
         println("The shot is out of the grid, retry.")
     }
 
-    def grids(player: Player, gridSize: Int): Unit = {
+    def grids(player: Player): Unit = {
+        val gridSize: Int = GameSettings.gridSize
         val boatSquares: List[Square] = player.boats.flatMap((b) => b.squares)
 
         println(player.name + " boat grid :")

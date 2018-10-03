@@ -21,12 +21,12 @@ object AskHelper {
         getUserInput
     }
 
-    def shotx(gs: GameSettings): Int = {
+    def shotx(): Int = {
         println("X position of the shot ?")
         getUserInput.toInt
     }
 
-    def shoty(gs: GameSettings): Int = {
+    def shoty(): Int = {
         println("Y position of the shot ?")
         getUserInput.toInt
     }

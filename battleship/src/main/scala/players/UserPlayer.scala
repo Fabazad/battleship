@@ -6,36 +6,36 @@ import game.GameSettings
 
 case class UserPlayer(override val name: String, override val boats: List[Boat] = List()) extends Player(name, boats){
 
-    override def askForBoats(gs: GameSettings): UserPlayer = {
+    override def askForBoats: UserPlayer = {
         DisplayHelper.playerTurn(name)
-        def askForBoatsBis(otherBoats: List[Boat], remainingBoats: List[Int], gs: GameSettings): UserPlayer = {
+        def askForBoatsBis(otherBoats: List[Boat], remainingBoats: List[Int]): UserPlayer = {
             remainingBoats match {
                 case Nil => new UserPlayer(name, otherBoats)
                 case x::l => {
-                    val boat: Boat = askForBoat(otherBoats, x, gs)
-                    askForBoatsBis(boat::otherBoats, l, gs)
+                    val boat: Boat = askForBoat(otherBoats, x)
+                    askForBoatsBis(boat::otherBoats, l)
                 }
             }
         }
-        askForBoatsBis(List(), gs.boats, gs)
+        askForBoatsBis(List(), GameSettings.boats)
     }
 
-    override def askForBoat(otherBoats: List[Boat], size: Int, gs: GameSettings): Boat = {
+    override def askForBoat(otherBoats: List[Boat], size: Int): Boat = {
         val headx: Int = AskHelper.boatHeadX(size)
         val heady: Int = AskHelper.boatHeadY(size)
         val direction: String = AskHelper.boatDirection(size)
-        val boat: Boat = Boat(size, headx, heady, direction, gs).getOrElse(askForBoat(otherBoats, size, gs))
+        val boat: Boat = Boat(size, headx, heady, direction).getOrElse(askForBoat(otherBoats, size))
         if (boat.isCrossingBoat(otherBoats)){
             DisplayHelper.errorCrossingBoat()
-            askForBoat(otherBoats, size, gs)
+            askForBoat(otherBoats, size)
         }
         else{
             boat
         }
     }
 
-    override def shot(target: Player, gs: GameSettings): Shot = {
-        UserPlayer.askForShot(gs)
+    override def shot(target: Player): Shot = {
+        UserPlayer.askForShot()
     }
 }
 
@@ -44,12 +44,13 @@ object UserPlayer {
         new UserPlayer(name)
     }
 
-    def askForShot(gs: GameSettings): Shot = {
-        val x: Int = AskHelper.shotx(gs)
-        val y: Int = AskHelper.shoty(gs)
-        if(x < 0 || x > gs.gridSize || y < 0 || y > gs.gridSize){
+    def askForShot(): Shot = {
+        val x: Int = AskHelper.shotx()
+        val y: Int = AskHelper.shoty()
+        val gridSize = GameSettings.gridSize
+        if(x < 0 || x > gridSize || y < 0 || y > gridSize){
             DisplayHelper.shotOutGrid()
-            askForShot(gs)
+            askForShot()
         }else{
             Shot(x, y, false)
         }

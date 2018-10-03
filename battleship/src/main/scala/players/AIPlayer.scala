@@ -6,34 +6,34 @@ import game.GameSettings
 
 case class AIPlayer(override val name: String, override val boats: List[Boat] = List()) extends Player(name, boats){
 
-    override def askForBoats(gs: GameSettings): AIPlayer = {
-        def askForBoatsBis(otherBoats: List[Boat], remainingBoats: List[Int], gs: GameSettings): AIPlayer = {
+    override def askForBoats(): AIPlayer = {
+        def askForBoatsBis(otherBoats: List[Boat], remainingBoats: List[Int]): AIPlayer = {
             remainingBoats match {
                 case Nil => new AIPlayer(name, otherBoats)
                 case x::l => {
-                    val boat: Boat = askForBoat(otherBoats, x, gs)
-                    askForBoatsBis(boat::otherBoats, l, gs)
+                    val boat: Boat = askForBoat(otherBoats, x)
+                    askForBoatsBis(boat::otherBoats, l)
                 }
             }
         }
-        askForBoatsBis(List(), gs.boats, gs)
+        askForBoatsBis(List(), GameSettings.boats)
     }
 
-    override def askForBoat(otherBoats: List[Boat], size: Int, gs: GameSettings): Boat = {
+    override def askForBoat(otherBoats: List[Boat], size: Int): Boat = {
         val headx: Int = AskHelper.boatHeadX(size)
         val heady: Int = AskHelper.boatHeadY(size)
         val direction: String = AskHelper.boatDirection(size)
-        val boat: Boat = Boat(size, headx, heady, direction, gs).getOrElse(askForBoat(otherBoats, size, gs))
+        val boat: Boat = Boat(size, headx, heady, direction).getOrElse(askForBoat(otherBoats, size))
         if (boat.isCrossingBoat(otherBoats)){
             DisplayHelper.errorCrossingBoat()
-            askForBoat(otherBoats, size, gs)
+            askForBoat(otherBoats, size)
         }
         else{
             boat
         }
     }
 
-    override def shot(target: Player, gs: GameSettings): Shot = {
+    override def shot(target: Player): Shot = {
         new Shot(1,1,false)
     }
 }
