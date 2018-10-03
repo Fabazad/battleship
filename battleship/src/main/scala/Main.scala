@@ -24,6 +24,10 @@ object Main extends App {
         DisplayHelper.playerTurn(game.player1.name)
         DisplayHelper.grids(game.player1)
         DisplayHelper.playerTurn(game.player1.name)
+
         val shot: Shot = game.player1.shot(game.player2)
+        val newPlayer1: Player = game.player1.addSentShot(shot)
+        val newPlayer2: Player = game.player2.addReceivedShot(shot)
+        println(newPlayer2)
     }
 }

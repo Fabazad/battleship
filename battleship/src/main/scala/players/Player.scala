@@ -4,10 +4,14 @@ import boats.Boat
 import helpers.AskHelper
 import helpers.DisplayHelper
 
-abstract class Player(val name: String, val boats: List[Boat]) {
+abstract class Player(val name: String, val boats: List[Boat], val sentShots: List[Shot], val receivedShots: List[Shot]) {
     def askForBoats(): Player
 
     def askForBoat(otherBoats: List[Boat], size: Int): Boat
 
     def shot(target: Player): Shot
+
+    def addSentShot(shot: Shot): Player
+
+    def addReceivedShot(shot: Shot): Player
 }

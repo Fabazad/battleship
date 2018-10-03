@@ -1,10 +1,16 @@
 package players
 
-import boats.Boat
+import boats._
 import helpers._
 import game.GameSettings
 
-case class AIPlayer(override val name: String, override val boats: List[Boat] = List()) extends Player(name, boats){
+case class AIPlayer(
+    override val name: String, 
+    override val boats: List[Boat] = List(), 
+    override val sentShots: List[Shot] = List(), 
+    override val receivedShots: List[Shot] = List()
+)  
+extends Player(name, boats, sentShots, receivedShots){
 
     override def askForBoats(): AIPlayer = {
         def askForBoatsBis(otherBoats: List[Boat], remainingBoats: List[Int]): AIPlayer = {
@@ -35,6 +41,26 @@ case class AIPlayer(override val name: String, override val boats: List[Boat] = 
 
     override def shot(target: Player): Shot = {
         new Shot(1,1,false)
+    }
+
+    override def addSentShot(shot: Shot): Player = {
+        new AIPlayer(name, boats, shot::sentShots, receivedShots)
+    }
+    
+    override def addReceivedShot(shot: Shot): AIPlayer = {
+        def boatsAfterShot(boats: List[Boat], shot: Shot): List[Boat] = {
+            boats match {
+                case Nil => Nil
+                case b::l => {
+                    val newCells: List[Cell] = b.cells.map((c) => {
+                        if(c.x == shot.x && c.y == shot.y) c.changeState(GameSettings.touchedDisplay) else c
+                    })
+                    Boat(newCells)::boatsAfterShot(l, shot)
+                }
+            }
+        }
+        val newBoats = boatsAfterShot(boats, shot)
+        AIPlayer(name, newBoats, sentShots, shot::receivedShots)
     }
 }
 

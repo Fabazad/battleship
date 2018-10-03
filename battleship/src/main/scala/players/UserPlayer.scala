@@ -1,10 +1,16 @@
 package players
 
-import boats.Boat
+import boats._
 import helpers._
 import game.GameSettings
 
-case class UserPlayer(override val name: String, override val boats: List[Boat] = List()) extends Player(name, boats){
+case class UserPlayer(
+    override val name: String, 
+    override val boats: List[Boat] = List(), 
+    override val sentShots: List[Shot] = List(), 
+    override val receivedShots: List[Shot] = List()
+) 
+extends Player(name, boats, sentShots, receivedShots){
 
     override def askForBoats: UserPlayer = {
         DisplayHelper.playerTurn(name)
@@ -35,7 +41,31 @@ case class UserPlayer(override val name: String, override val boats: List[Boat] 
     }
 
     override def shot(target: Player): Shot = {
-        UserPlayer.askForShot()
+        val shot: Shot = UserPlayer.askForShot()
+        val targetCells: List[Cell] = target.boats.flatMap((b) => b.cells)
+        val touched: Boolean = targetCells.filter((c) => c.x == shot.x && c.y == shot.y).length > 0
+        shot.setTouched(touched)
+    }
+
+    override def addSentShot(shot: Shot): Player = {
+        new UserPlayer(name, boats, shot::sentShots, receivedShots)
+    }
+
+    override def addReceivedShot(shot: Shot): UserPlayer = {
+        def boatsAfterShot(boats: List[Boat], shot: Shot): List[Boat] = {
+            boats match {
+                case Nil => Nil
+                case b::l => {
+                    val newCells: List[Cell] = b.cells.map((c) => {
+                        if(c.x == shot.x && c.y == shot.y) c.changeState(GameSettings.touchedDisplay) else c
+                    })
+                    println(newCells)
+                    Boat(newCells)::boatsAfterShot(l, shot)
+                }
+            }
+        }
+        val newBoats = boatsAfterShot(boats, shot)
+        UserPlayer(name, newBoats, sentShots, shot::receivedShots)
     }
 }
 
