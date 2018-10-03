@@ -1,6 +1,6 @@
 package helpers
 
-import players.Player
+import players._
 import game.GameSettings
 import boats.Cell
 
@@ -44,9 +44,13 @@ object DisplayHelper {
             //Normal Cell
             else if(x <= gridSize && y > 0){
                 val filteredCells: List[Cell] =  boatCells.filter((s) => s.x == x && s.y == y)
+                val filteredShots: List[Shot] =  player.receivedShots.filter((rs) => rs.x == x && rs.y == y)
                 if(filteredCells.length > 0){
                     val cell: Cell = filteredCells.head
                     print("|" + cell.state)
+                }
+                else if(filteredShots.length > 0){
+                    print("|" + GameSettings.untouchedDisplay)
                 }
                 else{
                     print("| ")

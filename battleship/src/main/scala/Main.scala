@@ -26,8 +26,14 @@ object Main extends App {
         DisplayHelper.playerTurn(game.player1.name)
 
         val shot: Shot = game.player1.shot(game.player2)
+
         val newPlayer1: Player = game.player1.addSentShot(shot)
         val newPlayer2: Player = game.player2.addReceivedShot(shot)
-        println(newPlayer2)
+
+        print(newPlayer2)
+        
+        val newGame: Game = Game(newPlayer2, newPlayer1)
+        
+        mainLoop(newGame)
     }
 }
