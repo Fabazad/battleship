@@ -25,6 +25,14 @@ object DisplayHelper {
         println("The shot is out of the grid, retry.")
     }
 
+    def shotSuccess(): Unit = {
+        println("The shot succeed !")
+    }
+
+    def shotFailure(): Unit = {
+        println("The shot failed !")
+    }
+
     def grids(player: Player): Unit = {
         val gridSize: Int = GameSettings.gridSize
         val boatCells: List[Cell] = player.boats.flatMap((b) => b.cells)

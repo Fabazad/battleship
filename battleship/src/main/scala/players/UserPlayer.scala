@@ -44,6 +44,7 @@ extends Player(name, boats, sentShots, receivedShots){
         val shot: Shot = UserPlayer.askForShot()
         val targetCells: List[Cell] = target.boats.flatMap((b) => b.cells)
         val touched: Boolean = targetCells.filter((c) => c.x == shot.x && c.y == shot.y).length > 0
+        if(touched) DisplayHelper.shotSuccess() else DisplayHelper.shotFailure()
         shot.setTouched(touched)
     }
 
@@ -59,7 +60,6 @@ extends Player(name, boats, sentShots, receivedShots){
                     val newCells: List[Cell] = b.cells.map((c) => {
                         if(c.x == shot.x && c.y == shot.y) c.changeState(GameSettings.touchedDisplay) else c
                     })
-                    println(newCells)
                     Boat(newCells)::boatsAfterShot(l, shot)
                 }
             }

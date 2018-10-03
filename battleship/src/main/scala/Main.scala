@@ -29,11 +29,10 @@ object Main extends App {
 
         val newPlayer1: Player = game.player1.addSentShot(shot)
         val newPlayer2: Player = game.player2.addReceivedShot(shot)
-
-        print(newPlayer2)
         
         val newGame: Game = Game(newPlayer2, newPlayer1)
+
+        if(AskHelper.continuWithNextPlayer(newPlayer2) != "Q") mainLoop(newGame)
         
-        mainLoop(newGame)
     }
 }

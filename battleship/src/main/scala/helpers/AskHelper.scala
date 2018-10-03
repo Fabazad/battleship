@@ -31,5 +31,10 @@ object AskHelper {
         getUserInput.toInt
     }
 
+    def continuWithNextPlayer(nextPlayer: Player): String = {
+        println("Continu with " + nextPlayer.name + " ? Or (Q)uit ?")
+        getUserInput.toUpperCase()
+    } 
+
     def getUserInput(): String = readLine.trim
 }
