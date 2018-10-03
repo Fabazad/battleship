@@ -58,8 +58,14 @@ extends Player(name, boats, sentShots, receivedShots){
                 case Nil => Nil
                 case b::l => {
                     val newCells: List[Cell] = b.cells.map((c) => {
-                        if(c.x == shot.x && c.y == shot.y) c.changeState(GameSettings.touchedDisplay) else c
+                        if(c.x == shot.x && c.y == shot.y){
+                            c.changeState(GameSettings.touchedDisplay)
+                        }else c
                     })
+                    //If the boat has been sank
+                    if(Cell.touchedNumber(newCells) == b.size() && Cell.touchedNumber(newCells) != Cell.touchedNumber(b.cells)){
+                        DisplayHelper.sunkBoat(b)
+                    }
                     Boat(newCells)::boatsAfterShot(l, shot)
                 }
             }

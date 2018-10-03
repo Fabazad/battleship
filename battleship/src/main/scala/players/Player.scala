@@ -1,6 +1,6 @@
 package players
 
-import boats.Boat
+import boats._
 import helpers.AskHelper
 import helpers.DisplayHelper
 
@@ -14,4 +14,10 @@ abstract class Player(val name: String, val boats: List[Boat], val sentShots: Li
     def addSentShot(shot: Shot): Player
 
     def addReceivedShot(shot: Shot): Player
+
+    
+    def lose(): Boolean = {
+        val allCells: List[Cell] = boats.flatMap((b) => b.cells)
+        allCells.filter((c) => !c.isTouched()).length == 0
+    }
 }

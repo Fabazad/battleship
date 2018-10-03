@@ -31,8 +31,11 @@ object Main extends App {
         val newPlayer2: Player = game.player2.addReceivedShot(shot)
         
         val newGame: Game = Game(newPlayer2, newPlayer1)
-
-        if(AskHelper.continuWithNextPlayer(newPlayer2) != "Q") mainLoop(newGame)
+        
+        if(newPlayer2.lose()){
+            DisplayHelper.playerWin(newPlayer1.name)
+        }
+        else if(AskHelper.continuWithNextPlayer(newPlayer2) != "Q") mainLoop(newGame)
         
     }
 }

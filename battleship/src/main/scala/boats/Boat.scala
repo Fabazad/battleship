@@ -18,6 +18,14 @@ case class Boat(cells: List[Cell]) {
         }
         isCrossingBoatBis(cells, otherBoats)
     }
+
+    def isSunk(): Boolean = {
+        cells.filter((c) => c.state == GameSettings.touchedDisplay).length == 0
+    }
+
+    def size(): Int = {
+        cells.length
+    }
 }
 
 object Boat {

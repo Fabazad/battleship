@@ -2,7 +2,7 @@ package helpers
 
 import players._
 import game.GameSettings
-import boats.Cell
+import boats._
 
 object DisplayHelper {
     def rules(): Unit = {
@@ -31,6 +31,14 @@ object DisplayHelper {
 
     def shotFailure(): Unit = {
         println("The shot failed !")
+    }
+
+    def sunkBoat(boat: Boat): Unit = {
+        println("Boat of size " + boat.size() + " has been sank !")
+    }
+
+    def playerWin(playerName: String): Unit = {
+        println(playerName + " win the game !")
     }
 
     def grids(player: Player): Unit = {
