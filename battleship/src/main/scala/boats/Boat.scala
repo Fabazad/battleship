@@ -9,7 +9,7 @@ case class Boat(squares: List[Square]) {
 
 object Boat {
     def apply(size: Int, headx: Int, heady: Int, direction: String, gs: GameSettings): Option[Boat] = {
-        val squares: List[Square] = createSquareList(size, direction, headx, heady)
+        val squares: List[Square] = createSquareList(size, size, direction, headx, heady)
         val squareOut: Boolean = squares.filter((s) => s.x < 0 || s.y < 0 || s.x > gs.gridSize || s.y > gs.gridSize).length > 0
         if(squareOut){
             DisplayHelper.boatOutGrid()
@@ -19,15 +19,15 @@ object Boat {
         } 
     }
 
-    def createSquareList(size: Int, direction: String, headx: Int, heady: Int): List[Square] = {
-        size match {
+    def createSquareList(acc: Int, size: Int, direction: String, headx: Int, heady: Int): List[Square] = {
+        acc match {
             case 0 => Nil
             case _ => { 
                 direction match {
-                    case "T" => new Square(headx, heady, false)::(createSquareList(size-1, direction, headx, heady+1))
-                    case "B" => new Square(headx, heady, false)::(createSquareList(size-1, direction, headx, heady-1))
-                    case "L" => new Square(headx, heady, false)::(createSquareList(size-1, direction, headx-1, heady))
-                    case "R" => new Square(headx, heady, false)::(createSquareList(size-1, direction, headx+1, heady))
+                    case "T" => new Square(headx, heady, size.toString)::(createSquareList(acc-1, size, direction, headx, heady+1))
+                    case "B" => new Square(headx, heady, size.toString)::(createSquareList(acc-1, size, direction, headx, heady-1))
+                    case "L" => new Square(headx, heady, size.toString)::(createSquareList(acc-1, size, direction, headx-1, heady))
+                    case "R" => new Square(headx, heady, size.toString)::(createSquareList(acc-1, size, direction, headx+1, heady))
                 }
             }
         }
