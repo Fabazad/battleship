@@ -24,13 +24,17 @@ case class AIPlayer(override val name: String, override val boats: List[Boat] = 
         val heady: Int = AskHelper.boatHeadY(size)
         val direction: String = AskHelper.boatDirection(size)
         val boat: Boat = Boat(size, headx, heady, direction, gs).getOrElse(askForBoat(otherBoats, size, gs))
-        if (Boat.isCrossingBoat(boat, otherBoats)){
+        if (boat.isCrossingBoat(otherBoats)){
             DisplayHelper.errorCrossingBoat()
             askForBoat(otherBoats, size, gs)
         }
         else{
             boat
         }
+    }
+
+    override def shot(target: Player, gs: GameSettings): Shot = {
+        new Shot(1,1,false)
     }
 }
 

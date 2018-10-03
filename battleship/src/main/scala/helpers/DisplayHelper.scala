@@ -21,6 +21,10 @@ object DisplayHelper {
         println(name + " turn :")
     }
 
+    def shotOutGrid(): Unit = {
+        println("The shot is out of the grid, retry.")
+    }
+
     def grids(player: Player, gridSize: Int): Unit = {
         val boatSquares: List[Square] = player.boats.flatMap((b) => b.squares)
 

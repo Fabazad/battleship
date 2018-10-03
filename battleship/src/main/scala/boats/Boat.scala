@@ -5,6 +5,19 @@ import helpers.DisplayHelper
 import players.Player
 
 case class Boat(squares: List[Square]) {
+    def isCrossingBoat(otherBoats: List[Boat]): Boolean = {
+        def isCrossingBoatBis(squares: List[Square], otherBoats: List[Boat]): Boolean = {
+            squares match {
+                case Nil => false
+                case x::l => {
+                    val squares = otherBoats.flatMap((b) => b.squares)
+                    val crossingSquares = squares.filter((s) => s.x == x.x && s.y == x.y)
+                    crossingSquares.length > 0 || isCrossingBoatBis(l, otherBoats)
+                }
+            }
+        }
+        isCrossingBoatBis(squares, otherBoats)
+    }
 }
 
 object Boat {
@@ -31,19 +44,5 @@ object Boat {
                 }
             }
         }
-    }
-
-    def isCrossingBoat(boat: Boat, otherBoats: List[Boat]): Boolean = {
-        def isCrossingBoatBis(squares: List[Square], otherBoats: List[Boat]): Boolean = {
-            squares match {
-                case Nil => false
-                case x::l => {
-                    val squares = otherBoats.flatMap((b) => b.squares)
-                    val crossingSquares = squares.filter((s) => s.x == x.x && s.y == x.y)
-                    crossingSquares.length > 0 || isCrossingBoatBis(l, otherBoats)
-                }
-            }
-        }
-        isCrossingBoatBis(boat.squares, otherBoats)
     }
 }

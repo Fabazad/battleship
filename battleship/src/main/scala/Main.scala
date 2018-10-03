@@ -1,8 +1,7 @@
 
 import helpers.DisplayHelper
 import helpers.AskHelper
-import players.UserPlayer
-import players.Player
+import players._
 import boats.Boat
 import game.Game
 import game.GameSettings
@@ -24,7 +23,9 @@ object Main extends App {
     mainLoop(game, gs)
 
     def mainLoop(game: Game, gs: GameSettings){
-        val player: Player = game.player1
-        DisplayHelper.grids(player, gs.gridSize)
+        DisplayHelper.playerTurn(game.player1.name)
+        DisplayHelper.grids(game.player1, gs.gridSize)
+        DisplayHelper.playerTurn(game.player1.name)
+        val shot: Shot = game.player1.shot(game.player2, gs)
     }
 }

@@ -25,7 +25,7 @@ case class UserPlayer(override val name: String, override val boats: List[Boat] 
         val heady: Int = AskHelper.boatHeadY(size)
         val direction: String = AskHelper.boatDirection(size)
         val boat: Boat = Boat(size, headx, heady, direction, gs).getOrElse(askForBoat(otherBoats, size, gs))
-        if (Boat.isCrossingBoat(boat, otherBoats)){
+        if (boat.isCrossingBoat(otherBoats)){
             DisplayHelper.errorCrossingBoat()
             askForBoat(otherBoats, size, gs)
         }
@@ -33,10 +33,25 @@ case class UserPlayer(override val name: String, override val boats: List[Boat] 
             boat
         }
     }
+
+    override def shot(target: Player, gs: GameSettings): Shot = {
+        UserPlayer.askForShot(gs)
+    }
 }
 
 object UserPlayer {
     def apply(name: String): UserPlayer = {
         new UserPlayer(name)
+    }
+
+    def askForShot(gs: GameSettings): Shot = {
+        val x: Int = AskHelper.shotx(gs)
+        val y: Int = AskHelper.shoty(gs)
+        if(x < 0 || x > gs.gridSize || y < 0 || y > gs.gridSize){
+            DisplayHelper.shotOutGrid()
+            askForShot(gs)
+        }else{
+            Shot(x, y, false)
+        }
     }
 }
