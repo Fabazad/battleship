@@ -1,6 +1,6 @@
 package helpers
 
-import players.Player
+import players._
 import game.GameSettings
 import boats.Boat
 import scala.util.matching.Regex
@@ -20,11 +20,12 @@ object AskHelper {
     def boatDirection(size: Int): String = {
         println("Boat of size : " + size + ". Choose a direction : (T)op, (L)eft, (B)ottom, (R)ight")
         val userInput: String = getUserInput.toUpperCase
-        if(userInput.matches("T|L|B|R")) 
-            userInput
-        else{
-            println("You have to put 'T', 'L', 'B' or 'R'.")
-            boatDirection(size)
+        userInput match {
+            case "T"|"L"|"B"|"R" => userInput
+            case _ => {
+                println("You have to put 'T', 'L', 'B' or 'R'. Retry.")
+                boatDirection(size)
+            }
         }
     }
 
@@ -48,12 +49,27 @@ object AskHelper {
         getUserInput.toUpperCase()
     }
 
+    def userOrAI(name: String): Player = {
+        println("Would you like to play with an (U)ser or with an (A)I ?")
+        val userInput: String = getUserInput.toUpperCase
+        userInput match {
+            case "U" => UserPlayer(name)
+            case "A" => AIPlayer(name)
+            case _ => {
+                println("You have to put 'U' or 'A'. Retry.")
+                userOrAI(name)
+            }
+        }
+    }
+
     def checkIntWithSize(userInput: String, f: (Int) => Int , size: Int): Int = {
-        if(userInput.matches("[0-9]+")) 
-            userInput.toInt 
-        else{
-            println("You have to put an integer.")
-            f(size)
+        val Pattern = "([0-9]+)".r
+        userInput match {
+            case Pattern(c) => userInput.toInt
+            case _ => {
+                println("You have to put an integer. Retry.")
+                f(size)
+            }
         }
     }
 
@@ -61,7 +77,7 @@ object AskHelper {
         if(userInput.matches("[0-9]+")) 
             userInput.toInt 
         else{
-            println("You have to put an integer.")
+            println("You have to put an integer. Retry.")
             f()
         }
     }

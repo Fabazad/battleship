@@ -32,8 +32,8 @@ object Boat {
     def apply(size: Int, headx: Int, heady: Int, direction: String): Option[Boat] = {
         val gridSize: Int = GameSettings.gridSize
         val cells: List[Cell] = createCellList(size, size, direction, headx, heady)
-        val CellOut: Boolean = cells.filter((s) => s.x < 0 || s.y < 0 || s.x > gridSize || s.y > gridSize).length > 0
-        if(CellOut){
+        val cellOut: Boolean = cells.filter((s) => s.x < 1 || s.y < 1 || s.x > gridSize || s.y > gridSize).length > 0
+        if(cellOut){
             DisplayHelper.boatOutGrid()
             None 
         }else{

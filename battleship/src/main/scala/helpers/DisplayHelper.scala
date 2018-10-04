@@ -17,8 +17,14 @@ object DisplayHelper {
         println("The boat is crossing another. Retry.")
     }
 
-    def playerTurn(name: String): Unit = {
-        println(name + " turn :")
+    def playerTurn(player: Player): Unit = {
+        player match {
+            case UserPlayer(n,b,ss,rs) => {
+                println(player.name + " turn :")
+                grids(player)
+            }
+            case AIPlayer(n,b,ss,rs) => println(player.name + " is playing.")
+        }
     }
 
     def shotOutGrid(): Unit = {
