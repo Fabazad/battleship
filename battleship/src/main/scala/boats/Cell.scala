@@ -1,6 +1,7 @@
 package boats
 
 import game._
+import players.Shot
 
 case class Cell(val x: Int, val y: Int, val state: String) {
 
@@ -8,14 +9,8 @@ case class Cell(val x: Int, val y: Int, val state: String) {
         Cell(x, y, newState)
     }
 
-    def isTouched(): Boolean = {
-        state == GameSettings.touchedDisplay
+    def isTouched(shots: List[Shot]): Boolean = {
+        shots.filter((s) => s.x == x && s.y == y).length > 0
     }
     
-}
-
-object Cell{
-    def touchedNumber(cells: List[Cell]): Int = {
-        cells.filter((c) => c.isTouched()).length
-    }
 }

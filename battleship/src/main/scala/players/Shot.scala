@@ -1,5 +1,8 @@
 package players
 
+import boats._
+import players._
+
 case class Shot(
     val x: Int, 
     val y: Int, 
@@ -21,5 +24,11 @@ case class Shot(
 }
 
 object Shot{
+    def shotedBoat(boats: List[Boat], shot: Shot): Option[Boat] = {
+        val shotedBoats: List[Boat] = boats.filter((b) => {
+            b.cells.filter((c) => c.x == shot.x && c.y == shot.y).length > 0
+        })
 
+        if(shotedBoats.isEmpty) None else Some(shotedBoats.head)
+    }
 }

@@ -2,7 +2,7 @@ package boats
 
 import game.GameSettings
 import helpers.DisplayHelper
-import players.Player
+import players._
 
 case class Boat(cells: List[Cell]) {
     def isCrossingBoat(otherBoats: List[Boat]): Boolean = {
@@ -19,8 +19,8 @@ case class Boat(cells: List[Cell]) {
         isCrossingBoatBis(cells, otherBoats)
     }
 
-    def isSunk(): Boolean = {
-        cells.filter((c) => c.state == GameSettings.touchedDisplay).length == 0
+    def isSunk(shots: List[Shot]): Boolean = {
+        cells.filter((c) => c.isTouched(shots)).length == size
     }
 
     def size(): Int = {

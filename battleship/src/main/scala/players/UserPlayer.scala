@@ -31,6 +31,10 @@ extends Player(name, boats, sentShots, receivedShots){
         new UserPlayer(name, boats, shot::sentShots, receivedShots)
     }
 
+    override def addReceivedShot(shot: Shot): Player = {
+        new UserPlayer(name, boats, sentShots, shot::receivedShots)
+    }
+
     override def askForShot(): Shot = {
         val x: Int = AskHelper.shotx()
         val y: Int = AskHelper.shoty()

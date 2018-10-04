@@ -37,6 +37,10 @@ extends Player(name, boats, sentShots, receivedShots){
         new AIPlayer(name, boats, shot::sentShots, receivedShots)
     }
 
+    override def addReceivedShot(shot: Shot): Player = {
+        new AIPlayer(name, boats, sentShots, shot::receivedShots)
+    }
+
     override def askForShot(): Shot = {
         val r: Random = Game.random
         val x: Int = r.nextInt(GameSettings.gridSize)+1

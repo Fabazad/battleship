@@ -80,7 +80,7 @@ object DisplayHelper {
         else if(x <= gridSize && y > 0){
             val filteredCells: List[Cell] =  boatCells.filter((s) => s.x == x && s.y == y)
             val filteredShots: List[Shot] =  shots.filter((rs) => rs.x == x && rs.y == y)
-            if(filteredCells.length > 0){
+            if(filteredCells.length > 0 && filteredShots.length < 1){
                 val cell: Cell = filteredCells.head
                 print("|" + cell.state)
             }
