@@ -18,7 +18,7 @@ object AskHelper {
 
     def boatDirection(size: Int): String = {
         println("Boat of size : " + size + ". Choose a direction : (T)op, (L)eft, (B)ottom, (R)ight")
-        getUserInput
+        getUserInput.toUpperCase()
     }
 
     def shotx(): Int = {
@@ -31,10 +31,15 @@ object AskHelper {
         getUserInput.toInt
     }
 
-    def continuWithNextPlayer(nextPlayer: Player): String = {
+    def continuOrQuit(nextPlayer: Player): String = {
         println("Continu with " + nextPlayer.name + " ? Or (Q)uit ?")
         getUserInput.toUpperCase()
-    } 
+    }
+
+    def nextPlayer(nextPlayer: Player): Unit = {
+        println("Continu with " + nextPlayer.name + " ?")
+        getUserInput.toUpperCase()
+    }
 
     def getUserInput(): String = readLine.trim
 }

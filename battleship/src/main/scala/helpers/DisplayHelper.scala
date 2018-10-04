@@ -47,48 +47,56 @@ object DisplayHelper {
 
     def grids(player: Player): Unit = {
         val gridSize: Int = GameSettings.gridSize
-        val boatCells: List[Cell] = player.boats.flatMap((b) => b.cells)
-
-        def displayGrid(x: Int, y: Int, gridSize: Int, boatCells: List[Cell], shots: List[Shot]): Unit = {
-            //Numbers on top
-            if(x <= gridSize && y == gridSize+1){
-                print(" " + x)
-                displayGrid(x+1, y, gridSize, boatCells, shots)
-            }
-            //Last top Cell
-            else if(x == gridSize+1 && y == gridSize+1){
-                println()
-                displayGrid(1, y-1, gridSize, boatCells, shots)
-            }
-            //Normal Cell
-            else if(x <= gridSize && y > 0){
-                val filteredCells: List[Cell] =  boatCells.filter((s) => s.x == x && s.y == y)
-                val filteredShots: List[Shot] =  shots.filter((rs) => rs.x == x && rs.y == y)
-                if(filteredCells.length > 0){
-                    val cell: Cell = filteredCells.head
-                    print("|" + cell.state)
-                }
-                else if(filteredShots.length > 0){
-                    if(filteredShots.head.touched) 
-                        print("|" + GameSettings.touchedDisplay)
-                    else 
-                        print("|" + GameSettings.untouchedDisplay)
-                }
-                else{
-                    print("| ")
-                }
-                displayGrid(x+1, y, gridSize, boatCells, shots)
-            }
-            //Numbers on right
-            else if(x >= gridSize && y > 0 && y < gridSize+1){
-                println("| " + y)
-                displayGrid(1, y-1, gridSize, boatCells, shots)
-            }
-        }
+        val boats: List[Boat] = player.boats
 
         println(player.name + " boat grid :")
-        displayGrid(1, gridSize+1, gridSize, boatCells, player.receivedShots)
+        displayGrid(boats, player.receivedShots)
         println(player.name + " shots grid :")
-        displayGrid(1, gridSize+1, gridSize, List(), player.sentShots)
+        displayGrid(List(), player.sentShots)
+    }
+
+    def displayGrid(boats: List[Boat], shots: List[Shot]): Unit = {
+        val boatCells: List[Cell] = boats.flatMap((b) => b.cells) 
+        displayGridBis(1, GameSettings.gridSize+1, GameSettings.gridSize, boatCells, shots)
+    }
+    def displayGridBis(x: Int, y: Int, gridSize: Int, boatCells: List[Cell], shots: List[Shot]): Unit = {
+        //Numbers on top
+        if(x <= gridSize && y == gridSize+1){
+            print(" " + x)
+            displayGridBis(x+1, y, gridSize, boatCells, shots)
+        }
+        //Last top Cell
+        else if(x == gridSize+1 && y == gridSize+1){
+            println()
+            displayGridBis(1, y-1, gridSize, boatCells, shots)
+        }
+        //Normal Cell
+        else if(x <= gridSize && y > 0){
+            val filteredCells: List[Cell] =  boatCells.filter((s) => s.x == x && s.y == y)
+            val filteredShots: List[Shot] =  shots.filter((rs) => rs.x == x && rs.y == y)
+            if(filteredCells.length > 0){
+                val cell: Cell = filteredCells.head
+                print("|" + cell.state)
+            }
+            else if(filteredShots.length > 0){
+                if(filteredShots.head.touched) 
+                    print("|" + GameSettings.touchedDisplay)
+                else 
+                    print("|" + GameSettings.untouchedDisplay)
+            }
+            else{
+                print("| ")
+            }
+            displayGridBis(x+1, y, gridSize, boatCells, shots)
+        }
+        //Numbers on right
+        else if(x >= gridSize && y > 0 && y < gridSize+1){
+            println("| " + y)
+            displayGridBis(1, y-1, gridSize, boatCells, shots)
+        }
+    }
+
+    def clear(): Unit = {
+        print("\033[H\033[2J")
     }
 }
