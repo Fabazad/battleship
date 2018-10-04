@@ -50,11 +50,12 @@ object AskHelper {
     }
 
     def userOrAI(name: String): Player = {
-        println("Would you like to play with an (U)ser or with an (A)I ?")
+        println("Would you like to play with an (U)ser or with an AI levels (1) or (2) ?")
         val userInput: String = getUserInput.toUpperCase
         userInput match {
             case "U" => UserPlayer(name)
-            case "A" => AIPlayer(name)
+            case "1" => AIPlayer(name)
+            case "2" => AIPlayer(name, 2)
             case _ => {
                 println("You have to put 'U' or 'A'. Retry.")
                 userOrAI(name)

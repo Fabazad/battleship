@@ -38,17 +38,17 @@ extends Player(name, boats, sentShots, receivedShots){
     override def askForShot(): Shot = {
         val x: Int = AskHelper.shotx()
         val y: Int = AskHelper.shoty()
-        val gridSize = GameSettings.gridSize
-        if(x < 1 || x > gridSize || y < 1 || y > gridSize){
+        val shot: Shot = Shot(x,y)
+        if(shot.isOutGrid){
             DisplayHelper.shotOutGrid()
             askForShot()
         }
-        else if(sentShots.filter((ss) => ss.x == x && ss.y == y).length > 0){
+        else if(shot.isAlreadyShot(sentShots)){
             DisplayHelper.alreadyShot()
             askForShot()
         }
         else{
-            Shot(x, y, false)
+            shot
         }
     }
 }

@@ -23,7 +23,7 @@ object DisplayHelper {
                 println(player.name + " turn :")
                 grids(player)
             }
-            case AIPlayer(n,b,ss,rs) => println(player.name + " is playing.")
+            case AIPlayer(n,l,b,ss,rs) => println(player.name + " is playing.")
         }
     }
 
@@ -59,6 +59,10 @@ object DisplayHelper {
         displayGrid(boats, player.receivedShots)
         println(player.name + " shots grid :")
         displayGrid(List(), player.sentShots)
+    }
+
+    def shotThere(shot: Shot, player: Player): Unit = {
+        println("Player " + player.name + " shot on (" + shot.x + "," + shot.y + ").")
     }
 
     def displayGrid(boats: List[Boat], shots: List[Shot]): Unit = {

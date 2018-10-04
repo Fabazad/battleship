@@ -6,10 +6,11 @@ import game._
 import scala.util.Random
 
 case class AIPlayer(
-    override val name: String, 
+    override val name: String,
+    val level: Int = 1,
     override val boats: List[Boat] = List(), 
     override val sentShots: List[Shot] = List(), 
-    override val receivedShots: List[Shot] = List()
+    override val receivedShots: List[Shot] = List(),
 )  
 extends Player(name, boats, sentShots, receivedShots){
 
@@ -34,26 +35,48 @@ extends Player(name, boats, sentShots, receivedShots){
     }
 
     override def addSentShot(shot: Shot): Player = {
-        new AIPlayer(name, boats, shot::sentShots, receivedShots)
+        new AIPlayer(name, level, boats, shot::sentShots, receivedShots)
     }
 
     override def addReceivedShot(shot: Shot): Player = {
-        new AIPlayer(name, boats, sentShots, shot::receivedShots)
+        new AIPlayer(name, level, boats, sentShots, shot::receivedShots)
     }
 
     override def askForShot(): Shot = {
-        val r: Random = Game.random
-        val x: Int = r.nextInt(GameSettings.gridSize)+1
-        val y: Int = r.nextInt(GameSettings.gridSize)+1
+        val shot: Shot = level match {
+            case 2 => {
+                def findShotLevelTwo(sentShots: List[Shot], acc: Int): Shot = {
+                    acc match {
+                        case 0 => Shot.randomShot
+                        case _ => {
+                            sentShots match {
+                                case Nil => Shot.randomShot
+                                case s::l =>{
+                                    if(s.touched && s.sankBoat) Shot.randomShot
+                                    else if(s.touched && !s.sankBoat) Shot.shotAround(s, sentShots)
+                                    else findShotLevelTwo(sentShots, acc-1)
+                                }
+                            }
+                        }
+                    }
+                }
+                findShotLevelTwo(sentShots, 4) 
+            }
+            case _ => {
+                Shot.randomShot
+            }
+        }
+
         val gridSize = GameSettings.gridSize
-        if(x < 0 || x > gridSize || y < 0 || y > gridSize){
+        if(shot.x < 0 || shot.x > gridSize || shot.y < 0 || shot.y > gridSize){
             askForShot()
         }
-        else if(sentShots.filter((ss) => ss.x == x && ss.y == y).length > 0){
+        else if(sentShots.filter((ss) => ss.x == shot.x && ss.y == shot.y).length > 0){
             askForShot()
         }
         else{
-            Shot(x, y, false)
+            DisplayHelper.shotThere(shot, this)
+            shot
         }
     }
 }

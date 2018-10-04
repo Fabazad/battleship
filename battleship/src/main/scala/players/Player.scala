@@ -20,8 +20,8 @@ abstract class Player(val name: String, val boats: List[Boat], val sentShots: Li
             remainingBoats match {
                 case Nil => {
                     this match {
-                        case UserPlayer(a,b,c,d) => UserPlayer(name, otherBoats)
-                        case AIPlayer(a,b,c,d) => AIPlayer(name, otherBoats)
+                        case UserPlayer(n,b,ss,rs) => UserPlayer(name, otherBoats)
+                        case AIPlayer(n,l,b,ss,rs) => AIPlayer(name, l, otherBoats)
                     }
                 }
                 case x::l => {
