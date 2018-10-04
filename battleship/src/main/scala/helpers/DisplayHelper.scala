@@ -10,11 +10,11 @@ object DisplayHelper {
     } 
 
     def boatOutGrid(): Unit = {
-        println("The boat is out of the grid, retry.")
+        println("The boat is out of the grid. Retry.")
     }
 
     def errorCrossingBoat(): Unit = {
-        println("The boat is crossing another, retry.")
+        println("The boat is crossing another. Retry.")
     }
 
     def playerTurn(name: String): Unit = {

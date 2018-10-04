@@ -18,6 +18,7 @@ extends Player(name, boats, sentShots, receivedShots){
             remainingBoats match {
                 case Nil => new UserPlayer(name, otherBoats)
                 case x::l => {
+                    DisplayHelper.clear()
                     val boat: Boat = askForBoat(otherBoats, x)
                     askForBoatsBis(boat::otherBoats, l)
                 }
@@ -27,8 +28,6 @@ extends Player(name, boats, sentShots, receivedShots){
     }
 
     override def askForBoat(otherBoats: List[Boat], size: Int): Boat = {
-        DisplayHelper.clear()
-        
         DisplayHelper.displayGrid(otherBoats, List())
 
         val headx: Int = AskHelper.boatHeadX(size)
@@ -39,9 +38,7 @@ extends Player(name, boats, sentShots, receivedShots){
             DisplayHelper.errorCrossingBoat()
             askForBoat(otherBoats, size)
         }
-        else{
-            boat
-        }
+        else boat
     }
 
     override def shot(target: Player): Shot = {
