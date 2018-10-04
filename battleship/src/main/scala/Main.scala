@@ -10,8 +10,11 @@ object Main extends App {
     DisplayHelper.clear()
     DisplayHelper.rules()
 
+    
+
     val emptyPlayer1: Player = UserPlayer("Player 1")
-    val emptyPlayer2: Player = UserPlayer("Player 2")
+    
+    val emptyPlayer2: Player = AskHelper.userOrAI("Player 2")
 
     val player1: Player = emptyPlayer1.askForBoats()
     AskHelper.nextPlayer(emptyPlayer2)
