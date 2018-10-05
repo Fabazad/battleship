@@ -52,7 +52,7 @@ extends Player(name, boats, sentShots, receivedShots){
                 findShotLevelTwo(sentShots, 4) 
             }
             case _ => {
-                Shot.randomShot
+                Shot.randomShot(sentShots)
             }
         }
 

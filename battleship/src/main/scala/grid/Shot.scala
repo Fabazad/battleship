@@ -46,11 +46,11 @@ object Shot{
         if(shotedBoats.isEmpty) None else Some(shotedBoats.head)
     }
 
-    def randomShot(): Shot = {
+    def randomShot(shots: List[Shot]): Shot = {
         val r: Random = Game.random
-        val x: Int = r.nextInt(GameSettings.gridSize)+1
-        val y: Int = r.nextInt(GameSettings.gridSize)+1
-        Shot(Pos(x,y))
+        val remainingPos: List[Pos] = Pos.allPos.filter((p) => !p.alreadyShot(shots))
+        val randomPos: Pos = remainingPos(r.nextInt(remainingPos.length))
+        Shot(randomPos)
     }
 
     def shotAround(shot: Shot, shots: List[Shot]): Shot = {
