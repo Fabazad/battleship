@@ -35,11 +35,15 @@ case class Pos(val x: Int, val y: Int){
 object Pos {
     def allPos(): List[Pos] = {
         def allPosBis(x: Int, y: Int): List[Pos] = {
-            if(x == 0 && y == 0) Nil
+            if(y == 0) Nil
             else if(x > 0) Pos(x,y)::allPosBis(x-1, y)
             else allPosBis(GameSettings.gridSize, y-1)
             
         }
         allPosBis(GameSettings.gridSize, GameSettings.gridSize)
+    }
+
+    def posAround(pos: Pos): List[Pos] = {
+        List(pos.top, pos.right, pos.bottom, pos.left)
     }
 }

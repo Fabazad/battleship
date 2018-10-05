@@ -46,27 +46,32 @@ extends Player(name, boats, sentShots, receivedShots){
     override def askForShot(): Shot = {
         val shot: Shot = level match {
             case 2 => {
-                def findShotLevelTwo(sentShots: List[Shot], acc: Int): Shot = {
-                    Shot(Pos(1,1))
+                val lastTouchedShotOption: Option[Shot] = Shot.lastTouchedShot(sentShots)
+                lastTouchedShotOption match {
+                    case None =>{
+                        Shot.randomShot(sentShots)
+                    }
+                    case Some(lastTouchedShot) => {
+                        if(lastTouchedShot.sankBoat) Shot.randomShot(sentShots)
+                        else{
+                            val firstTouchedShotOption: Option[Shot] = Shot.firstTouchedShot(sentShots)
+                            val firstTouchedShot = firstTouchedShotOption.get
+                            if(firstTouchedShot.pos.equal(lastTouchedShot.pos)){
+                                Shot.shotAround(firstTouchedShot, sentShots).getOrElse(Shot.randomShot(sentShots))
+                            }
+                            else{
+                                Shot.shotNear(firstTouchedShot, lastTouchedShot, sentShots).getOrElse(Shot.randomShot(sentShots))
+                            }
+                        }
+                    }
                 }
-                findShotLevelTwo(sentShots, 4) 
             }
             case _ => {
                 Shot.randomShot(sentShots)
             }
         }
-
-        val gridSize = GameSettings.gridSize
-        if(shot.isOutGrid){
-            askForShot()
-        }
-        else if(shot.isAlreadyShot(sentShots)){
-            askForShot()
-        }
-        else{
-            DisplayHelper.shotThere(shot, this)
-            shot
-        }
+        DisplayHelper.shotThere(shot, this)
+        shot
     }
 }
 

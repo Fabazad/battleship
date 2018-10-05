@@ -5,6 +5,7 @@ import players._
 import game._
 import scala.util.Random
 import grid._
+import scala.util.Random
 
 case class Shot(
     val pos: Pos,
@@ -42,7 +43,6 @@ object Shot{
         val shotedBoats: List[Boat] = boats.filter((b) => {
             b.cells.filter((c) => c.pos.equal(shot.pos)).length > 0
         })
-
         if(shotedBoats.isEmpty) None else Some(shotedBoats.head)
     }
 
@@ -53,23 +53,15 @@ object Shot{
         Shot(randomPos)
     }
 
-    def shotAround(shot: Shot, shots: List[Shot]): Shot = {
-        Shot(Pos(1,1))
-    }
-
-    def randomShotAround(shot: Shot, shots: List[Shot]): Shot = {
+    def shotAround(shot: Shot, shots: List[Shot]): Option[Shot] = {
         val r: Random = Game.random
-        val dir: Int = r.nextInt(4)
-        val newShot: Shot = dir match {
-            case 0 => Shot(shot.pos.top)
-            case 1 => Shot(shot.pos.right)
-            case 2 => Shot(shot.pos.bottom)
-            case 3 => Shot(shot.pos.left)
+        val availablePos: List[Pos] = Pos.posAround(shot.pos).filter((p) => !p.alreadyShot(shots))
+        if(availablePos.length > 0){
+            val randomPos: Pos = availablePos(r.nextInt(availablePos.length))
+            Some(Shot(randomPos))
         }
-        if(newShot.isOutGrid || newShot.isAlreadyShot(shots)){
-            randomShotAround(shot, shots)
-        } 
-        else newShot
+        else None
+        
     }
 
     def isValidShot(x: Int, y: Int, shots: List[Shot]): Boolean = {
@@ -84,5 +76,51 @@ object Shot{
                 case s::ls => if(s.touched && !s.sankBoat) Some(s) else lastUsefullTouchedShot(ls, acc-1)
             }
         }
+    }
+
+    def lastTouchedShot(shots: List[Shot]): Option[Shot] = {
+        shots match {
+            case Nil => None
+            case s::ls => if(s.touched) Some(s) else lastTouchedShot(ls)
+        }
+    }
+
+    def firstTouchedShot(shots: List[Shot]): Option[Shot] = {
+        def firstTouchedShotBis(shots: List[Shot], firstShot: Option[Shot]): Option[Shot] = {
+            shots match {
+                case Nil => firstShot
+                case s::ls =>{
+                    if(s.sankBoat) firstShot
+                    else if(s.touched) firstTouchedShotBis(ls, Some(s))
+                    else firstTouchedShotBis(ls, firstShot)
+                } 
+            }
+        }
+        firstTouchedShotBis(shots, None)
+    }
+
+    def shotNear(firstShot: Shot, lastShot: Shot, shots: List[Shot]): Option[Shot] = {
+        val r: Random = Game.random
+        val allPos: List[Pos] = Pos.allPos
+        //Ligne
+        if(firstShot.pos.x == lastShot.pos.x){
+            val nearPos: List[Pos] = List(firstShot.pos.left, firstShot.pos.right, lastShot.pos.left, lastShot.pos.right)
+            val availablePos: List[Pos] = nearPos.filter((p) => !p.alreadyShot(shots))
+            if(availablePos.length > 0){
+                val randomPos:Pos = availablePos(r.nextInt(availablePos.length))
+                Some(Shot(randomPos))
+            }
+            else None
+        }
+        else if(firstShot.pos.y == lastShot.pos.y){
+            val nearPos: List[Pos] = List(firstShot.pos.top, firstShot.pos.bottom, lastShot.pos.top, lastShot.pos.bottom)
+            val availablePos: List[Pos] = nearPos.filter((p) => !p.alreadyShot(shots))
+            if(availablePos.length > 0){
+                val randomPos:Pos = availablePos(r.nextInt(availablePos.length))
+                Some(Shot(randomPos))
+            }
+            else None
+        }
+        else None
     }
 }
