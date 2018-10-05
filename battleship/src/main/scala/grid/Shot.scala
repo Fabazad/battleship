@@ -123,4 +123,11 @@ object Shot{
         }
         else None
     }
+    
+    def randomModuloShot(shots: List[Shot]): Shot = {
+        val r: Random = Game.random
+        val remainingPos: List[Pos] = Pos.allPos.filter((p) => !p.alreadyShot(shots) && (p.x+p.y)%2 == 0)
+        val randomPos: Pos = remainingPos(r.nextInt(remainingPos.length))
+        Shot(randomPos)
+    }
 }
