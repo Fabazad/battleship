@@ -4,6 +4,7 @@ import boats._
 import helpers._
 import game.GameSettings
 import scala.util.Random
+import grid._
 
 case class UserPlayer(
     override val name: String, 

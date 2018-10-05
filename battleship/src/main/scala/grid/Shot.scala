@@ -1,9 +1,11 @@
-package players
+package grid
 
 import boats._
 import players._
 import game._
 import scala.util.Random
+import grid._
+
 case class Shot(
     val x: Int, 
     val y: Int, 
@@ -53,7 +55,6 @@ object Shot{
     }
 
     def shotAround(shot: Shot, shots: List[Shot]): Shot = {
-        println("test")
         shots match {
             case Nil => randomShotAround(shot, shots)
             case s::l => {
@@ -83,5 +84,15 @@ object Shot{
 
     def isValidShot(x: Int, y: Int, shots: List[Shot]): Boolean = {
         Shot(x,y).isValid(shots)
+    }
+
+    def lastUsefullTouchedShot(sentShots: List[Shot], acc: Int): Option[Shot] = {
+        acc match {
+            case 0 => None
+            case _ => sentShots match {
+                case Nil => None
+                case s::ls => if(s.touched && !s.sankBoat) Some(s) else lastUsefullTouchedShot(ls, acc-1)
+            }
+        }
     }
 }

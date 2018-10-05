@@ -4,6 +4,7 @@ import boats._
 import helpers._
 import game._
 import scala.util.Random
+import grid._
 
 case class AIPlayer(
     override val name: String,
@@ -46,19 +47,7 @@ extends Player(name, boats, sentShots, receivedShots){
         val shot: Shot = level match {
             case 2 => {
                 def findShotLevelTwo(sentShots: List[Shot], acc: Int): Shot = {
-                    acc match {
-                        case 0 => Shot.randomShot
-                        case _ => {
-                            sentShots match {
-                                case Nil => Shot.randomShot
-                                case s::l =>{
-                                    if(s.touched && s.sankBoat) Shot.randomShot
-                                    else if(s.touched && !s.sankBoat) Shot.shotAround(s, sentShots)
-                                    else findShotLevelTwo(sentShots, acc-1)
-                                }
-                            }
-                        }
-                    }
+                    Shot(1,1)
                 }
                 findShotLevelTwo(sentShots, 4) 
             }

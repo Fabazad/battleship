@@ -4,6 +4,7 @@ import boats._
 import helpers._
 import scala.util.Random
 import game.GameSettings
+import grid._
 
 abstract class Player(val name: String, val boats: List[Boat], val sentShots: List[Shot], val receivedShots: List[Shot]) {
 

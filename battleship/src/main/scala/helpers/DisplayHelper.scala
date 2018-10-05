@@ -3,6 +3,7 @@ package helpers
 import players._
 import game.GameSettings
 import boats._
+import grid._
 
 object DisplayHelper {
     def rules(): Unit = {

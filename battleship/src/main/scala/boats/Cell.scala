@@ -1,7 +1,7 @@
 package boats
 
 import game._
-import players.Shot
+import grid._
 
 case class Cell(val x: Int, val y: Int, val state: String) {
 

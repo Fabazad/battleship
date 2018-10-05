@@ -3,6 +3,7 @@ package boats
 import game.GameSettings
 import helpers.DisplayHelper
 import players._
+import grid._
 
 case class Boat(cells: List[Cell]) {
     def isCrossingBoat(otherBoats: List[Boat]): Boolean = {
