@@ -39,7 +39,7 @@ extends Player(name, boats, sentShots, receivedShots){
     override def askForShot(): Shot = {
         val x: Int = AskHelper.shotx()
         val y: Int = AskHelper.shoty()
-        val shot: Shot = Shot(x,y)
+        val shot: Shot = Shot(Pos(x,y))
         if(shot.isOutGrid){
             DisplayHelper.shotOutGrid()
             askForShot()

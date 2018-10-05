@@ -42,15 +42,15 @@ abstract class Player(val name: String, val boats: List[Boat], val sentShots: Li
         shotedBoat match {
             case None => {
                 DisplayHelper.shotFailure()
-                Shot(shot.x, shot.y)
+                Shot(shot.pos)
             }
             case Some(b) => {
                 DisplayHelper.shotSuccess()
                 if(b.isSunk(shot::target.receivedShots)){
                    DisplayHelper.sunkBoat(b)
-                   Shot(shot.x, shot.y, true, b.size, true) 
+                   Shot(shot.pos, true, b.size, true) 
                 }
-                else Shot(shot.x, shot.y, true, b.size)
+                else Shot(shot.pos, true, b.size)
             }
         }
     }

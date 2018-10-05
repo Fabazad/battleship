@@ -47,7 +47,7 @@ extends Player(name, boats, sentShots, receivedShots){
         val shot: Shot = level match {
             case 2 => {
                 def findShotLevelTwo(sentShots: List[Shot], acc: Int): Shot = {
-                    Shot(1,1)
+                    Shot(Pos(1,1))
                 }
                 findShotLevelTwo(sentShots, 4) 
             }
@@ -57,10 +57,10 @@ extends Player(name, boats, sentShots, receivedShots){
         }
 
         val gridSize = GameSettings.gridSize
-        if(shot.x < 0 || shot.x > gridSize || shot.y < 0 || shot.y > gridSize){
+        if(shot.isOutGrid){
             askForShot()
         }
-        else if(sentShots.filter((ss) => ss.x == shot.x && ss.y == shot.y).length > 0){
+        else if(shot.isAlreadyShot(sentShots)){
             askForShot()
         }
         else{
