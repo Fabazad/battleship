@@ -24,7 +24,7 @@ object AskHelper {
         userInput match {
             case "T"|"L"|"B"|"R" => userInput
             case _ => {
-                println("You have to put 'T', 'L', 'B' or 'R'. Retry.")
+                println("You have to enter 'T', 'L', 'B' or 'R'. Retry.")
                 boatDirection(size)
             }
         }
@@ -59,7 +59,7 @@ object AskHelper {
             case "2" => AIPlayer(name, 2)
             case "3" => AIPlayer(name, 3)
             case _ => {
-                println("You have to put 'U', '1', '2' or '3'. Retry.")
+                println("You have to enter 'U', '1', '2' or '3'. Retry.")
                 userOrAI(name)
             }
         }
@@ -70,7 +70,7 @@ object AskHelper {
         userInput match {
             case Pattern(c) => userInput.toInt
             case _ => {
-                println("You have to put an integer. Retry.")
+                println("You have to enter an integer. Retry.")
                 f(size)
             }
         }
@@ -80,8 +80,35 @@ object AskHelper {
         if(userInput.matches("[0-9]+")) 
             userInput.toInt 
         else{
-            println("You have to put an integer. Retry.")
+            println("You have to enter an integer. Retry.")
             f()
+        }
+    }
+
+    def contestOrGame(): String = {
+        println("Would you like to make a (C)ontest of AIs or a simple (G) ?")
+        val userInput: String = getUserInput.toUpperCase
+        userInput match {
+            case "C"|"G" => userInput
+            case _ => {
+                println("You have to enter 'C' or 'G'. Retry.")
+                contestOrGame()
+            }
+        }
+    }
+
+    def whichAI(name: String): AIPlayer = {
+
+        println("Which AI level for "+ name +" ? (1), (2) or (3) ?")
+        val userInput: String = getUserInput
+        userInput match {
+            case "1" => AIPlayer(name + " (level " + userInput + ")", 1)
+            case "2" => AIPlayer(name + " (level " + userInput + ")", 2)
+            case "3" => AIPlayer(name + " (level " + userInput + ")", 3)
+            case _ => {
+                println("You have to enter '1', '2' or '3'. Retry.")
+                whichAI(name)
+            }
         }
     }
 

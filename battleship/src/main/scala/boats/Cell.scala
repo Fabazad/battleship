@@ -18,3 +18,19 @@ case class Cell(val pos: Pos, val state: String) {
     }
     
 }
+
+object Cell{
+    def createCellList(acc: Int, size: Int, direction: String, headx: Int, heady: Int): List[Cell] = {
+        acc match {
+            case 0 => Nil
+            case _ => { 
+                direction match {
+                    case "T" => new Cell(Pos(headx, heady), size.toString)::(createCellList(acc-1, size, direction, headx, heady+1))
+                    case "B" => new Cell(Pos(headx, heady), size.toString)::(createCellList(acc-1, size, direction, headx, heady-1))
+                    case "L" => new Cell(Pos(headx, heady), size.toString)::(createCellList(acc-1, size, direction, headx-1, heady))
+                    case "R" => new Cell(Pos(headx, heady), size.toString)::(createCellList(acc-1, size, direction, headx+1, heady))
+                }
+            }
+        }
+    }
+}

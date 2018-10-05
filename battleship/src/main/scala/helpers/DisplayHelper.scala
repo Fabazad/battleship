@@ -20,11 +20,11 @@ object DisplayHelper {
 
     def playerTurn(player: Player): Unit = {
         player match {
-            case UserPlayer(n,b,ss,rs) => {
+            case UserPlayer(n,b,ss,rs,s) => {
                 println(player.name + " turn :")
                 grids(player)
             }
-            case AIPlayer(n,l,b,ss,rs) => println(player.name + " is playing.")
+            case AIPlayer(n,l,b,ss,rs,s) => println(player.name + " is playing.")
         }
     }
 
@@ -105,6 +105,11 @@ object DisplayHelper {
             println("| " + y)
             displayGridBis(1, y-1, gridSize, boatCells, shots)
         }
+    }
+
+    def score(player1: Player, player2: Player): Unit = {
+        println(player1.name + " : " + player1.score)
+        println(player2.name + " : " + player2.score)
     }
 
     def clear(): Unit = {
