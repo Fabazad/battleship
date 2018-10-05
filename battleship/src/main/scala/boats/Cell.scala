@@ -1,21 +1,20 @@
 package boats
 
 import game._
+import grid._
 
-case class Cell(val x: Int, val y: Int, val state: String) {
+case class Cell(val pos: Pos, val state: String) {
 
     def changeState(newState: String): Cell = {
-        Cell(x, y, newState)
+        Cell(pos, newState)
     }
 
-    def isTouched(): Boolean = {
-        state == GameSettings.touchedDisplay
+    def isTouched(shots: List[Shot]): Boolean = {
+        shots.filter((s) => s.pos.equal(pos)).length > 0
+    }
+
+    def isOutGrid(): Boolean = {
+        pos.isOutGrid
     }
     
-}
-
-object Cell{
-    def touchedNumber(cells: List[Cell]): Int = {
-        cells.filter((c) => c.isTouched()).length
-    }
 }

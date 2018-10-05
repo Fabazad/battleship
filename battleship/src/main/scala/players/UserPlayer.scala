@@ -4,6 +4,7 @@ import boats._
 import helpers._
 import game.GameSettings
 import scala.util.Random
+import grid._
 
 case class UserPlayer(
     override val name: String, 
@@ -31,20 +32,24 @@ extends Player(name, boats, sentShots, receivedShots){
         new UserPlayer(name, boats, shot::sentShots, receivedShots)
     }
 
+    override def addReceivedShot(shot: Shot): Player = {
+        new UserPlayer(name, boats, sentShots, shot::receivedShots)
+    }
+
     override def askForShot(): Shot = {
         val x: Int = AskHelper.shotx()
         val y: Int = AskHelper.shoty()
-        val gridSize = GameSettings.gridSize
-        if(x < 1 || x > gridSize || y < 1 || y > gridSize){
+        val shot: Shot = Shot(Pos(x,y))
+        if(shot.isOutGrid){
             DisplayHelper.shotOutGrid()
             askForShot()
         }
-        else if(sentShots.filter((ss) => ss.x == x && ss.y == y).length > 0){
+        else if(shot.isAlreadyShot(sentShots)){
             DisplayHelper.alreadyShot()
             askForShot()
         }
         else{
-            Shot(x, y, false)
+            shot
         }
     }
 }

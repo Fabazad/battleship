@@ -2,6 +2,7 @@ package game
 
 import players.Player
 import scala.util.Random
+import grid._
 
 case class Game(player1: Player, player2: Player){
 

@@ -5,6 +5,7 @@ import players._
 import boats.Boat
 import game.Game
 import game.GameSettings
+import grid._
 
 object Main extends App {
 

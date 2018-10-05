@@ -4,6 +4,7 @@ import players._
 import game.GameSettings
 import boats.Boat
 import scala.util.matching.Regex
+import grid._
 
 object AskHelper {
     
@@ -50,13 +51,15 @@ object AskHelper {
     }
 
     def userOrAI(name: String): Player = {
-        println("Would you like to play with an (U)ser or with an (A)I ?")
+        println("Would you like to play with an (U)ser or with an AI levels (1), (2) or (3) ?")
         val userInput: String = getUserInput.toUpperCase
         userInput match {
             case "U" => UserPlayer(name)
-            case "A" => AIPlayer(name)
+            case "1" => AIPlayer(name)
+            case "2" => AIPlayer(name, 2)
+            case "3" => AIPlayer(name, 3)
             case _ => {
-                println("You have to put 'U' or 'A'. Retry.")
+                println("You have to put 'U', '1', '2' or '3'. Retry.")
                 userOrAI(name)
             }
         }

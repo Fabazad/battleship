@@ -3,6 +3,7 @@ package helpers
 import players._
 import game.GameSettings
 import boats._
+import grid._
 
 object DisplayHelper {
     def rules(): Unit = {
@@ -23,7 +24,7 @@ object DisplayHelper {
                 println(player.name + " turn :")
                 grids(player)
             }
-            case AIPlayer(n,b,ss,rs) => println(player.name + " is playing.")
+            case AIPlayer(n,l,b,ss,rs) => println(player.name + " is playing.")
         }
     }
 
@@ -61,6 +62,10 @@ object DisplayHelper {
         displayGrid(List(), player.sentShots)
     }
 
+    def shotThere(shot: Shot, player: Player): Unit = {
+        println("Player " + player.name + " shot on (" + shot.pos.x + "," + shot.pos.y + ").")
+    }
+
     def displayGrid(boats: List[Boat], shots: List[Shot]): Unit = {
         val boatCells: List[Cell] = boats.flatMap((b) => b.cells) 
         displayGridBis(1, GameSettings.gridSize+1, GameSettings.gridSize, boatCells, shots)
@@ -78,9 +83,9 @@ object DisplayHelper {
         }
         //Normal Cell
         else if(x <= gridSize && y > 0){
-            val filteredCells: List[Cell] =  boatCells.filter((s) => s.x == x && s.y == y)
-            val filteredShots: List[Shot] =  shots.filter((rs) => rs.x == x && rs.y == y)
-            if(filteredCells.length > 0){
+            val filteredCells: List[Cell] =  boatCells.filter((s) => s.pos.equal(Pos(x,y)))
+            val filteredShots: List[Shot] =  shots.filter((rs) => rs.pos.equal(Pos(x,y)))
+            if(filteredCells.length > 0 && filteredShots.length < 1){
                 val cell: Cell = filteredCells.head
                 print("|" + cell.state)
             }

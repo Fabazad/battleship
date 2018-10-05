@@ -4,12 +4,14 @@ import boats._
 import helpers._
 import game._
 import scala.util.Random
+import grid._
 
 case class AIPlayer(
-    override val name: String, 
+    override val name: String,
+    val level: Int = 1,
     override val boats: List[Boat] = List(), 
     override val sentShots: List[Shot] = List(), 
-    override val receivedShots: List[Shot] = List()
+    override val receivedShots: List[Shot] = List(),
 )  
 extends Player(name, boats, sentShots, receivedShots){
 
@@ -34,28 +36,51 @@ extends Player(name, boats, sentShots, receivedShots){
     }
 
     override def addSentShot(shot: Shot): Player = {
-        new AIPlayer(name, boats, shot::sentShots, receivedShots)
+        new AIPlayer(name, level, boats, shot::sentShots, receivedShots)
+    }
+
+    override def addReceivedShot(shot: Shot): Player = {
+        new AIPlayer(name, level, boats, sentShots, shot::receivedShots)
     }
 
     override def askForShot(): Shot = {
-        val r: Random = Game.random
-        val x: Int = r.nextInt(GameSettings.gridSize)+1
-        val y: Int = r.nextInt(GameSettings.gridSize)+1
-        val gridSize = GameSettings.gridSize
-        if(x < 0 || x > gridSize || y < 0 || y > gridSize){
-            askForShot()
+        
+        val shot: Shot = level match {
+            case 3 => AIPlayer.shotByFollowingBoat(sentShots, Shot.randomModuloShot)
+            case 2 => AIPlayer.shotByFollowingBoat(sentShots, Shot.randomShot)
+            case _ => {
+                Shot.randomShot(sentShots)
+            }
         }
-        else if(sentShots.filter((ss) => ss.x == x && ss.y == y).length > 0){
-            askForShot()
-        }
-        else{
-            Shot(x, y, false)
-        }
+        DisplayHelper.shotThere(shot, this)
+        shot
     }
 }
 
 object AIPlayer {
     def apply(name: String): AIPlayer = {
         new AIPlayer(name)
+    }
+
+    def shotByFollowingBoat(sentShots: List[Shot], randomShot: (List[Shot]) => Shot ): Shot = {
+        val lastTouchedShotOption: Option[Shot] = Shot.lastTouchedShot(sentShots)
+        lastTouchedShotOption match {
+            case None =>{
+                randomShot(sentShots)
+            }
+            case Some(lastTouchedShot) => {
+                if(lastTouchedShot.sankBoat) randomShot(sentShots)
+                else{
+                    val firstTouchedShotOption: Option[Shot] = Shot.firstTouchedShot(sentShots)
+                    val firstTouchedShot = firstTouchedShotOption.get
+                    if(firstTouchedShot.pos.equal(lastTouchedShot.pos)){
+                        Shot.shotAround(firstTouchedShot, sentShots).getOrElse(randomShot(sentShots))
+                    }
+                    else{
+                        Shot.shotNear(firstTouchedShot, lastTouchedShot, sentShots).getOrElse(randomShot(sentShots))
+                    }
+                }
+            }
+        }
     }
 }
