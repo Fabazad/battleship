@@ -1,7 +1,7 @@
 package helpers
 
 import players._
-import game.GameSettings
+import game._
 import boats._
 import grid._
 
@@ -127,5 +127,19 @@ object DisplayHelper {
 
     def clear(): Unit = {
         print("\033[H\033[2J")
+    }
+
+    def csvLine(contest: Contest): String = {
+        
+        val aiPlayer1 : AIPlayer = contest.player1 match { case AIPlayer(n,l,b,rs,ss,s) => AIPlayer(n,l,b,rs,ss,s)}
+        val aiPlayer2 : AIPlayer = contest.player2 match { case AIPlayer(n,l,b,rs,ss,s) => AIPlayer(n,l,b,rs,ss,s)}
+        
+        val player1: Player = if(aiPlayer1.level > aiPlayer2.level) aiPlayer2 else aiPlayer1
+        val player2: Player = if(aiPlayer1.level > aiPlayer2.level) aiPlayer1 else aiPlayer2
+        player1.name + ";" + player1.score + ";" + player2.name + ";" + player2.score + "\n"
+    }
+
+    def endOfBigContest(): Unit = {
+        println("End of the big contest, please find csv at result.csv.")
     }
 }

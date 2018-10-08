@@ -6,6 +6,7 @@ import boats.Boat
 import game._
 import grid._
 import scala.util.Random
+import java.io._
 
 object Main extends App {
     DisplayHelper.clear()
@@ -31,28 +32,31 @@ object Main extends App {
         else None   
     }
 
-    def contestLoop(initPlayer1: Player, initPlayer2: Player, acc: Int){
+    def contestLoop(emptyPlayer1: Player, emptyPlayer2: Player, acc: Int, bigContest: Boolean): Contest = {
         acc match {
             case 0 => {
-                DisplayHelper.clear
-                DisplayHelper.score(initPlayer1, initPlayer2)
+                if(bigContest)
+                    DisplayHelper.clear
+                    DisplayHelper.score(emptyPlayer1, emptyPlayer2)
+                Contest(emptyPlayer1,emptyPlayer2)
             } 
             case _ => {
-                val player1: Player = initPlayer1.askForBoats()
-                val player2: Player = initPlayer2.askForBoats()
+                val player1: Player = emptyPlayer1.askForBoats()
+                val player2: Player = emptyPlayer2.askForBoats()
 
                 val game = Game(player1, player2)
                 val winner = gameLoop(game, true).get.addScore
 
-                if(winner.equal(player1)) contestLoop(player2, winner, acc-1)
-                else contestLoop(player1, winner, acc-1)
+                if(winner.equal(player1)) contestLoop(player2, winner, acc-1, false)
+                else contestLoop(player1, winner, acc-1, false)
             }
         }
     }
 
     def mainLoop(){
+        DisplayHelper.clear
         AskHelper.contestOrGame match {
-            case "G" => {
+            case "1" => {
                 DisplayHelper.rules()
                 AskHelper.continue()
 
@@ -67,13 +71,41 @@ object Main extends App {
                 val game: Game = Game(player1, player2)
 
                 gameLoop(game, false)
+
+                if(AskHelper.returnToMenu) mainLoop()
             }
-            case "C" => {
+            case "2" => {
                 val player1: Player = AskHelper.whichAI("AI player 1").askForBoats
                 val player2: Player = AskHelper.whichAI("AI player 2").askForBoats
-                contestLoop(player1, player2, GameSettings.contestGames)
+                contestLoop(player1, player2, GameSettings.contestGames, false)
+                if(AskHelper.returnToMenu) mainLoop()
+            }
+            case "3" => {
+                val file = new File("result.csv")
+                val bw = new BufferedWriter(new FileWriter(file))
+
+                val player1: Player = AIPlayer("AI level 1", 1)
+                val player2: Player = AIPlayer("AI level 2", 2)
+                val player3: Player = AIPlayer("AI level 3", 3)
+
+
+                bw.write("AI Name; score; AI Name2; score2\n")
+                val contest1: Contest = contestLoop(player1, player2, GameSettings.contestGames, true)
+                bw.write(DisplayHelper.csvLine(contest1))
+                val contest2: Contest = contestLoop(player1, player3, GameSettings.contestGames, true)
+                bw.write(DisplayHelper.csvLine(contest2))
+                val contest3: Contest = contestLoop(player2, player3, GameSettings.contestGames, true)
+                bw.write(DisplayHelper.csvLine(contest3))
+
+                bw.close();
+
+                DisplayHelper.clear
+                DisplayHelper.endOfBigContest
+                if(AskHelper.returnToMenu) mainLoop()
+            }
+            case "4" => {
+                println("Good bye")
             }
         }
-        if(AskHelper.returnToMenu) mainLoop()
     }
 }

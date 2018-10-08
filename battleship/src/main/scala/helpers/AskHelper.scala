@@ -91,19 +91,23 @@ object AskHelper {
     }
 
     def contestOrGame(): String = {
-        println("Would you like to make a (C)ontest of AIs or a simple (G)ame ?")
+        println("What would you like to do ?")
+        println("1) Game between user and/or AI")
+        println("2) Simple Contest of two AIs")
+        println("3) Big Contest (Contest between all AIs)")
+        println("4) Quit")
+
         val userInput: String = getUserInput.toUpperCase
         userInput match {
-            case "C"|"G" => userInput
+            case "1"|"2"|"3"|"4" => userInput
             case _ => {
-                println("\u001b[33mYou have to enter 'C' or 'G'. Retry.\u001b[0m")
+                println("\u001b[33mYou have to enter '1', '2' or '3'. Retry.\u001b[0m")
                 contestOrGame()
             }
         }
     }
 
     def whichAI(name: String): AIPlayer = {
-
         println("Which AI level for "+ name +" ? (1), (2) or (3) ?")
         val userInput: String = getUserInput
         userInput match {
