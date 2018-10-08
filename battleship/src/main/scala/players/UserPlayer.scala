@@ -10,7 +10,8 @@ case class UserPlayer(
     override val name: String, 
     override val boats: List[Boat] = List(), 
     override val sentShots: List[Shot] = List(), 
-    override val receivedShots: List[Shot] = List()
+    override val receivedShots: List[Shot] = List(),
+    override val score: Int = 0
 ) 
 extends Player(name, boats, sentShots, receivedShots){
 
@@ -20,8 +21,12 @@ extends Player(name, boats, sentShots, receivedShots){
         val headx: Int = AskHelper.boatHeadX(size)
         val heady: Int = AskHelper.boatHeadY(size)
         val direction: String = AskHelper.boatDirection(size)
-        val boat: Boat = Boat(size, headx, heady, direction).getOrElse(askForBoat(otherBoats, size))
-        if (boat.isCrossingBoat(otherBoats)){
+        val boat: Boat = Boat(size, headx, heady, direction)
+        if(boat.isOutGrid){
+            DisplayHelper.boatOutGrid
+            askForBoat(otherBoats, size)
+        }
+        else if (boat.isCrossingBoat(otherBoats)){
             DisplayHelper.errorCrossingBoat()
             askForBoat(otherBoats, size)
         }
@@ -29,11 +34,11 @@ extends Player(name, boats, sentShots, receivedShots){
     }
 
     override def addSentShot(shot: Shot): Player = {
-        new UserPlayer(name, boats, shot::sentShots, receivedShots)
+        new UserPlayer(name, boats, shot::sentShots, receivedShots, score)
     }
 
     override def addReceivedShot(shot: Shot): Player = {
-        new UserPlayer(name, boats, sentShots, shot::receivedShots)
+        new UserPlayer(name, boats, sentShots, shot::receivedShots, score)
     }
 
     override def askForShot(): Shot = {
@@ -51,6 +56,14 @@ extends Player(name, boats, sentShots, receivedShots){
         else{
             shot
         }
+    }
+
+    def addScore(): UserPlayer = {
+        UserPlayer(name, boats, sentShots, receivedShots, score+1)
+    }
+
+    override def init(): Player = {
+        UserPlayer(name, List(), List(), List(), score)
     }
 }
 

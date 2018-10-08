@@ -1,35 +1,43 @@
 package helpers
 
 import players._
-import game.GameSettings
+import game._
 import boats._
 import grid._
 
 object DisplayHelper {
     def rules(): Unit = {
-        println("Ici on écris les règles")
+        println("\u001b[32m")
+        println("Welcome to battleship Game !\n")
+        println("Each player has " + GameSettings.boats.size + " ships of sizes " + GameSettings.boats + ".")
+        println("They have to place this ships on a grid of size " + GameSettings.gridSize + "x" + GameSettings.gridSize + ".")
+        println("Each turn the players can shot on a position in order to sink the other player ships.")
+        println("The first to sink all the opponent ships win the game.")
+        println("You can play agains an AI, AI level 1 is easy and the one level 3 is hard.")
+        println("Have a good game !")
+        println("\u001b[0m")
     } 
 
     def boatOutGrid(): Unit = {
-        println("The boat is out of the grid. Retry.")
+        println("\u001b[33mThe ship is out of the grid. Retry.\u001b[0m")
     }
 
     def errorCrossingBoat(): Unit = {
-        println("The boat is crossing another. Retry.")
+        println("\u001b[33mThe shot is crossing another one. Retry.\u001b[0m")
     }
 
     def playerTurn(player: Player): Unit = {
         player match {
-            case UserPlayer(n,b,ss,rs) => {
+            case UserPlayer(n,b,ss,rs,s) => {
                 println(player.name + " turn :")
                 grids(player)
             }
-            case AIPlayer(n,l,b,ss,rs) => println(player.name + " is playing.")
+            case AIPlayer(n,l,b,ss,rs,s) => println(player.name + " is playing.")
         }
     }
 
     def shotOutGrid(): Unit = {
-        println("The shot is out of the grid. Retry.")
+        println("\u001b[33mThe shot is out of the grid. Retry.\u001b[0m")
     }
 
     def shotSuccess(): Unit = {
@@ -49,7 +57,7 @@ object DisplayHelper {
     }
 
     def alreadyShot(): Unit = {
-        println("You already shot this position. Retry.")
+        println("\u001b[33mYou already shot this position. Retry.\u001b[0m")
     }
 
     def grids(player: Player): Unit = {
@@ -58,7 +66,7 @@ object DisplayHelper {
 
         println(player.name + " boat grid :")
         displayGrid(boats, player.receivedShots)
-        println(player.name + " shots grid :")
+        println(player.name + " shot grid :")
         displayGrid(List(), player.sentShots)
     }
 
@@ -73,7 +81,7 @@ object DisplayHelper {
     def displayGridBis(x: Int, y: Int, gridSize: Int, boatCells: List[Cell], shots: List[Shot]): Unit = {
         //Numbers on top
         if(x <= gridSize && y == gridSize+1){
-            print(" " + x)
+            print(" \u001b[36m" + x + "\u001b[0m")
             displayGridBis(x+1, y, gridSize, boatCells, shots)
         }
         //Last top Cell
@@ -87,7 +95,7 @@ object DisplayHelper {
             val filteredShots: List[Shot] =  shots.filter((rs) => rs.pos.equal(Pos(x,y)))
             if(filteredCells.length > 0 && filteredShots.length < 1){
                 val cell: Cell = filteredCells.head
-                print("|" + cell.state)
+                print("|\u001b[33m" + cell.state + "\u001b[0m")
             }
             else if(filteredShots.length > 0){
                 if(filteredShots.head.touched) 
@@ -102,12 +110,36 @@ object DisplayHelper {
         }
         //Numbers on right
         else if(x >= gridSize && y > 0 && y < gridSize+1){
-            println("| " + y)
+            println("| \u001b[35m" + y + "\u001b[0m")
             displayGridBis(1, y-1, gridSize, boatCells, shots)
         }
     }
 
+    def score(player1: Player, player2: Player): Unit = {
+        if(player1.score > player2.score) print("\u001b[32m")
+        else print("\u001b[31m")
+        println(player1.name + " : " + player1.score)
+        if(player1.score > player2.score) print("\u001b[31m")
+        else print("\u001b[32m")
+        print(player2.name + " : " + player2.score)
+        println("\u001b[0m")
+    }
+
     def clear(): Unit = {
         print("\033[H\033[2J")
+    }
+
+    def csvLine(contest: Contest): String = {
+        
+        val aiPlayer1 : AIPlayer = contest.player1 match { case AIPlayer(n,l,b,rs,ss,s) => AIPlayer(n,l,b,rs,ss,s)}
+        val aiPlayer2 : AIPlayer = contest.player2 match { case AIPlayer(n,l,b,rs,ss,s) => AIPlayer(n,l,b,rs,ss,s)}
+        
+        val player1: Player = if(aiPlayer1.level > aiPlayer2.level) aiPlayer2 else aiPlayer1
+        val player2: Player = if(aiPlayer1.level > aiPlayer2.level) aiPlayer1 else aiPlayer2
+        player1.name + ";" + player1.score + ";" + player2.name + ";" + player2.score + "\n"
+    }
+
+    def endOfBigContest(): Unit = {
+        println("End of the big contest, please find csv at result.csv.")
     }
 }
