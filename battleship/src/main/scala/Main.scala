@@ -13,6 +13,7 @@ object Main extends App {
     AskHelper.contestOrGame match {
         case "G" => {
             DisplayHelper.rules()
+            AskHelper.continue()
 
             val emptyPlayer1: Player = UserPlayer("Player 1")
             val emptyPlayer2: Player = AskHelper.userOrAI("Player 2")
@@ -29,8 +30,7 @@ object Main extends App {
         case "C" => {
             val player1: Player = AskHelper.whichAI("AI player 1").askForBoats
             val player2: Player = AskHelper.whichAI("AI player 2").askForBoats
-
-            contestLoop(player1, player2, 1000)
+            contestLoop(player1, player2, GameSettings.contestGames)
         }
     }
 
@@ -65,6 +65,7 @@ object Main extends App {
 
                 val game = Game(player1, player2)
                 val winner = gameLoop(game, true).get.addScore
+
                 if(winner.equal(player1)) contestLoop(player2, winner, acc-1)
                 else contestLoop(player1, winner, acc-1)
             }

@@ -9,49 +9,54 @@ import grid._
 object AskHelper {
     
     def boatHeadX(size: Int): Int = {
-        println("Boat of size : " + size + ". Choose a x location")
+        println("Ship of size : " + size + ". \u001b[36mChoose a x location\u001b[0m")
         checkIntWithSize(getUserInput, boatHeadX, size)
     }
 
     def boatHeadY(size: Int): Int = {
-        println("Boat of size : " + size + ". Choose a y location")
+        println("Ship of size : " + size + ". \u001b[35mChoose a y location\u001b[0m")
         checkIntWithSize(getUserInput, boatHeadY, size)
     }
 
     def boatDirection(size: Int): String = {
-        println("Boat of size : " + size + ". Choose a direction : (T)op, (L)eft, (B)ottom, (R)ight")
+        println("Ship of size : " + size + ". Choose a direction : (T)op, (L)eft, (B)ottom, (R)ight")
         val userInput: String = getUserInput.toUpperCase
         userInput match {
             case "T"|"L"|"B"|"R" => userInput
             case _ => {
-                println("You have to enter 'T', 'L', 'B' or 'R'. Retry.")
+                println("\u001b[33mYou have to enter 'T', 'L', 'B' or 'R'. Retry.\u001b[0m")
                 boatDirection(size)
             }
         }
     }
 
     def shotx(): Int = {
-        println("X position of the shot ?")
+        println("\u001b[36mX position of the shot ?\u001b[0m")
         checkInt(getUserInput, shotx)
     }
 
     def shoty(): Int = {
-        println("Y position of the shot ?")
+        println("\u001b[35mY position of the shot ?\u001b[0m")
         checkInt(getUserInput, shoty)
     }
 
+    def continue(): Unit = {
+        println("Continue (Enter) ?")
+        getUserInput
+    }
+
     def continuOrQuit(nextPlayer: Player): String = {
-        println("Continu with " + nextPlayer.name + " ? Or (Q)uit ?")
+        println("Continu with " + nextPlayer.name + " (Enter) ? Or (Q)uit ?")
         getUserInput.toUpperCase()
     }
 
     def nextPlayer(nextPlayer: Player): Unit = {
-        println("Continu with " + nextPlayer.name + " ?")
+        println("Continue with " + nextPlayer.name + " ?")
         getUserInput.toUpperCase()
     }
 
     def userOrAI(name: String): Player = {
-        println("Would you like to play with an (U)ser or with an AI levels (1), (2) or (3) ?")
+        println("Would you like to play with an (U)ser or with an AI with level (1), (2) or (3) ?")
         val userInput: String = getUserInput.toUpperCase
         userInput match {
             case "U" => UserPlayer(name)
@@ -59,7 +64,7 @@ object AskHelper {
             case "2" => AIPlayer(name, 2)
             case "3" => AIPlayer(name, 3)
             case _ => {
-                println("You have to enter 'U', '1', '2' or '3'. Retry.")
+                println("\u001b[33mYou have to enter 'U', '1', '2' or '3'. Retry.\u001b[0m")
                 userOrAI(name)
             }
         }
@@ -70,7 +75,7 @@ object AskHelper {
         userInput match {
             case Pattern(c) => userInput.toInt
             case _ => {
-                println("You have to enter an integer. Retry.")
+                println("\u001b[33mYou have to enter an integer. Retry.\u001b[0m")
                 f(size)
             }
         }
@@ -80,18 +85,18 @@ object AskHelper {
         if(userInput.matches("[0-9]+")) 
             userInput.toInt 
         else{
-            println("You have to enter an integer. Retry.")
+            println("\u001b[33mYou have to enter an integer. Retry.\u001b[0m")
             f()
         }
     }
 
     def contestOrGame(): String = {
-        println("Would you like to make a (C)ontest of AIs or a simple (G) ?")
+        println("Would you like to make a (C)ontest of AIs or a simple (G)ame ?")
         val userInput: String = getUserInput.toUpperCase
         userInput match {
             case "C"|"G" => userInput
             case _ => {
-                println("You have to enter 'C' or 'G'. Retry.")
+                println("\u001b[33mYou have to enter 'C' or 'G'. Retry.\u001b[0m")
                 contestOrGame()
             }
         }
@@ -106,7 +111,7 @@ object AskHelper {
             case "2" => AIPlayer(name + " (level " + userInput + ")", 2)
             case "3" => AIPlayer(name + " (level " + userInput + ")", 3)
             case _ => {
-                println("You have to enter '1', '2' or '3'. Retry.")
+                println("\u001b[33mYou have to enter '1', '2' or '3'. Retry.\u001b[0m")
                 whichAI(name)
             }
         }
