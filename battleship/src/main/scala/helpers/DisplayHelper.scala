@@ -28,13 +28,13 @@ object DisplayHelper {
     }
 
     def playerTurn(player: Player): Unit = {
-        player match {
+        /*player match {
             case UserPlayer(n,b,ss,rs,s) => {
                 println(player.name + " turn :")
                 grids(player)
             }
             case AIPlayer(n,l,b,ss,rs,s) => println(player.name + " is playing.")
-        }
+        }*/
     }
 
     def shotOutGrid(): Unit = {
@@ -42,19 +42,19 @@ object DisplayHelper {
     }
 
     def shotSuccess(): Unit = {
-        println("The shot succeed !")
+        //println("The shot succeed !")
     }
 
     def shotFailure(): Unit = {
-        println("The shot failed !")
+        //println("The shot failed !")
     }
 
     def sunkBoat(boat: Boat): Unit = {
-        println("Boat of size " + boat.size() + " has been sank !")
+        //println("Boat of size " + boat.size() + " has been sank !")
     }
 
     def playerWin(playerName: String): Unit = {
-        println(playerName + " win the game !")
+        //println(playerName + " win the game !")
     }
 
     def alreadyShot(): Unit = {
@@ -72,7 +72,7 @@ object DisplayHelper {
     }
 
     def shotThere(shot: Shot, player: Player): Unit = {
-        println("Player " + player.name + " shot on (" + shot.pos.x + "," + shot.pos.y + ").")
+        //println("Player " + player.name + " shot on (" + shot.pos.x + "," + shot.pos.y + ").")
     }
 
     def displayGrid(boats: List[Boat], shots: List[Shot]): Unit = {
@@ -129,7 +129,7 @@ object DisplayHelper {
     }
 
     def clear(): Unit = {
-        print("\033[H\033[2J")
+        //print("\033[H\033[2J")
     }
 
     def csvLine(contest: Contest): String = {
@@ -143,6 +143,6 @@ object DisplayHelper {
     }
 
     def endOfBigContest(): Unit = {
-        println("End of the big contest, please find csv at result.csv.")
+        //println("End of the big contest, please find csv at result.csv.")
     }
 }
