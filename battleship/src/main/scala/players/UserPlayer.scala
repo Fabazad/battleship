@@ -6,6 +6,14 @@ import game.GameSettings
 import scala.util.Random
 import grid._
 
+/**
+  * The class that represent a Player, but more precisely the player as user.
+  * @param name Name of the player.
+  * @param boats The ships of the player.
+  * @param sentShots The sent shots by the player during a game.
+  * @param receivedShots The received shots by the player during a game.
+  * @param score The score of a player during a contest.
+  */
 case class UserPlayer(
     override val name: String, 
     override val boats: List[Boat] = List(), 
@@ -16,12 +24,16 @@ case class UserPlayer(
 extends Player(name, boats, sentShots, receivedShots){
 
     override def askForBoat(otherBoats: List[Boat], size: Int): Boat = {
+        
         DisplayHelper.displayGrid(otherBoats, List())
 
         val headx: Int = AskHelper.boatHeadX(size)
         val heady: Int = AskHelper.boatHeadY(size)
         val direction: String = AskHelper.boatDirection(size)
+
         val boat: Boat = Boat(size, headx, heady, direction)
+
+        // Check Boat
         if(boat.isOutGrid){
             DisplayHelper.boatOutGrid
             askForBoat(otherBoats, size)
@@ -44,7 +56,10 @@ extends Player(name, boats, sentShots, receivedShots){
     override def askForShot(): Shot = {
         val x: Int = AskHelper.shotx()
         val y: Int = AskHelper.shoty()
+
         val shot: Shot = Shot(Pos(x,y))
+
+        //Check shots
         if(shot.isOutGrid){
             DisplayHelper.shotOutGrid()
             askForShot()
@@ -53,22 +68,21 @@ extends Player(name, boats, sentShots, receivedShots){
             DisplayHelper.alreadyShot()
             askForShot()
         }
-        else{
-            shot
-        }
+        else shot
     }
 
-    def addScore(): UserPlayer = {
+    override def addScore(): UserPlayer = {
         UserPlayer(name, boats, sentShots, receivedShots, score+1)
-    }
-
-    override def init(): Player = {
-        UserPlayer(name, List(), List(), List(), score)
     }
 }
 
 object UserPlayer {
+    /**
+      * Create a new empty user player.
+      * @param name The name of the player.
+      * @return The empty player, just a name.
+      */
     def apply(name: String): UserPlayer = {
-        UserPlayer(name)
+        new UserPlayer(name)
     }
 }

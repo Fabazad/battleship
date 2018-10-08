@@ -10,10 +10,16 @@ import java.io._
 import scala.annotation.tailrec
 
 object Main extends App {
-    DisplayHelper.clear()
 
+    DisplayHelper.clear()
     mainLoop();
 
+    /**
+      *
+      * @param game This is the game state, it contains the two players.
+      * @param isContest Indicates if the game is part of a contest.
+      * @return Returns the Option of the Winner (Player). None if the user quit before finish the game.
+      */
     @tailrec
     def gameLoop(game: Game, isContest: Boolean): Option[Player] = {
         DisplayHelper.clear()
@@ -30,10 +36,18 @@ object Main extends App {
             DisplayHelper.playerWin(newPlayer1.name)
             Some(newPlayer1)
         }
-        else if(isContest || AskHelper.continuOrQuit(newPlayer2) != "Q") gameLoop(newGame, isContest)
+        else if(isContest || AskHelper.continuOrQuit(newPlayer2)) gameLoop(newGame, isContest)
         else None   
     }
 
+    /**
+      *
+      * @param emptyPlayer1 The first AIPlayer to participate at the contest.
+      * @param emptyPlayer2 The second AIPlayer to participate at the contest.
+      * @param acc The number of game that remains (so the number of game of the contest.
+      * @param bigContest Indicates if the contest is part of a big contest (with many AIs).
+      * @return An object Contest that contains players with their score about the contest.
+      */
     @tailrec
     def contestLoop(emptyPlayer1: Player, emptyPlayer2: Player, acc: Int, bigContest: Boolean): Contest = {
         acc match {
@@ -56,10 +70,14 @@ object Main extends App {
         }
     }
 
+    /**
+      * The Main loop of the App
+      */
     @tailrec
     def mainLoop(){
         DisplayHelper.clear
         AskHelper.contestOrGame match {
+            // Simple game between at least one User Player
             case "1" => {
                 DisplayHelper.rules()
                 AskHelper.continue()
@@ -70,7 +88,6 @@ object Main extends App {
                 val player1: Player = emptyPlayer1.askForBoats()
                 AskHelper.nextPlayer(emptyPlayer2)
                 val player2: Player = emptyPlayer2.askForBoats()
-                
 
                 val game: Game = Game(player1, player2)
 
@@ -78,21 +95,25 @@ object Main extends App {
 
                 if(AskHelper.returnToMenu) mainLoop()
             }
+            // Contest with two AIs
             case "2" => {
                 val player1: Player = AskHelper.whichAI("AI player 1").askForBoats
                 val player2: Player = AskHelper.whichAI("AI player 2").askForBoats
+
                 contestLoop(player1, player2, GameSettings.contestGames, false)
                 if(AskHelper.returnToMenu) mainLoop()
             }
+            //Big contest with all AIs
             case "3" => {
                 val file = new File("result.csv")
                 val bw = new BufferedWriter(new FileWriter(file))
 
+                // Create all players
                 val player1: Player = AIPlayer("AI level 1", 1)
                 val player2: Player = AIPlayer("AI level 2", 2)
                 val player3: Player = AIPlayer("AI level 3", 3)
 
-
+                //Play all the contest
                 bw.write("AI Name; score; AI Name2; score2\n")
                 val contest1: Contest = contestLoop(player1, player2, GameSettings.contestGames, true)
                 bw.write(DisplayHelper.csvLine(contest1))
@@ -105,8 +126,10 @@ object Main extends App {
 
                 DisplayHelper.clear
                 DisplayHelper.endOfBigContest
+
                 if(AskHelper.returnToMenu) mainLoop()
             }
+            // Quit
             case "4" => {
                 println("Good bye")
             }

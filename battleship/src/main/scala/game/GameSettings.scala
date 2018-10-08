@@ -1,5 +1,8 @@
 package game
 
+/**
+  * Settings of the game.
+  */
 object GameSettings {
     val gridSize: Int = 10
     val boats: List[Int] = List(5,4,3,3,2)
