@@ -4,6 +4,7 @@ import players._
 import game._
 import boats._
 import grid._
+import scala.annotation.tailrec
 
 object DisplayHelper {
     def rules(): Unit = {
@@ -78,6 +79,8 @@ object DisplayHelper {
         val boatCells: List[Cell] = boats.flatMap((b) => b.cells) 
         displayGridBis(1, GameSettings.gridSize+1, GameSettings.gridSize, boatCells, shots)
     }
+
+    @tailrec
     def displayGridBis(x: Int, y: Int, gridSize: Int, boatCells: List[Cell], shots: List[Shot]): Unit = {
         //Numbers on top
         if(x <= gridSize && y == gridSize+1){

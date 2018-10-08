@@ -5,7 +5,7 @@ import players._
 import game._
 import scala.util.Random
 import grid._
-import scala.util.Random
+import scala.annotation.tailrec
 
 case class Shot(
     val pos: Pos,
@@ -61,13 +61,13 @@ object Shot{
             Some(Shot(randomPos))
         }
         else None
-        
     }
 
     def isValidShot(x: Int, y: Int, shots: List[Shot]): Boolean = {
         Shot(Pos(x,y)).isValid(shots)
     }
 
+    @tailrec
     def lastUsefullTouchedShot(sentShots: List[Shot], acc: Int): Option[Shot] = {
         acc match {
             case 0 => None
@@ -78,6 +78,7 @@ object Shot{
         }
     }
 
+    @tailrec
     def lastTouchedShot(shots: List[Shot]): Option[Shot] = {
         shots match {
             case Nil => None
@@ -86,6 +87,7 @@ object Shot{
     }
 
     def firstTouchedShot(shots: List[Shot]): Option[Shot] = {
+        @tailrec
         def firstTouchedShotBis(shots: List[Shot], firstShot: Option[Shot]): Option[Shot] = {
             shots match {
                 case Nil => firstShot

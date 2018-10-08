@@ -7,12 +7,14 @@ import game._
 import grid._
 import scala.util.Random
 import java.io._
+import scala.annotation.tailrec
 
 object Main extends App {
     DisplayHelper.clear()
 
     mainLoop();
 
+    @tailrec
     def gameLoop(game: Game, isContest: Boolean): Option[Player] = {
         DisplayHelper.clear()
         if(!isContest)DisplayHelper.playerTurn(game.player1)
@@ -32,6 +34,7 @@ object Main extends App {
         else None   
     }
 
+    @tailrec
     def contestLoop(emptyPlayer1: Player, emptyPlayer2: Player, acc: Int, bigContest: Boolean): Contest = {
         acc match {
             case 0 => {
@@ -53,6 +56,7 @@ object Main extends App {
         }
     }
 
+    @tailrec
     def mainLoop(){
         DisplayHelper.clear
         AskHelper.contestOrGame match {
