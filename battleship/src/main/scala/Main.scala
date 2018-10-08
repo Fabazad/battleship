@@ -10,29 +10,7 @@ import scala.util.Random
 object Main extends App {
     DisplayHelper.clear()
 
-    AskHelper.contestOrGame match {
-        case "G" => {
-            DisplayHelper.rules()
-            AskHelper.continue()
-
-            val emptyPlayer1: Player = UserPlayer("Player 1")
-            val emptyPlayer2: Player = AskHelper.userOrAI("Player 2")
-
-            val player1: Player = emptyPlayer1.askForBoats()
-            AskHelper.nextPlayer(emptyPlayer2)
-            val player2: Player = emptyPlayer2.askForBoats()
-            
-
-            val game: Game = Game(player1, player2)
-
-            gameLoop(game, false)
-        }
-        case "C" => {
-            val player1: Player = AskHelper.whichAI("AI player 1").askForBoats
-            val player2: Player = AskHelper.whichAI("AI player 2").askForBoats
-            contestLoop(player1, player2, GameSettings.contestGames)
-        }
-    }
+    mainLoop();
 
     def gameLoop(game: Game, isContest: Boolean): Option[Player] = {
         DisplayHelper.clear()
@@ -70,5 +48,32 @@ object Main extends App {
                 else contestLoop(player1, winner, acc-1)
             }
         }
+    }
+
+    def mainLoop(){
+        AskHelper.contestOrGame match {
+            case "G" => {
+                DisplayHelper.rules()
+                AskHelper.continue()
+
+                val emptyPlayer1: Player = UserPlayer("Player 1")
+                val emptyPlayer2: Player = AskHelper.userOrAI("Player 2")
+
+                val player1: Player = emptyPlayer1.askForBoats()
+                AskHelper.nextPlayer(emptyPlayer2)
+                val player2: Player = emptyPlayer2.askForBoats()
+                
+
+                val game: Game = Game(player1, player2)
+
+                gameLoop(game, false)
+            }
+            case "C" => {
+                val player1: Player = AskHelper.whichAI("AI player 1").askForBoats
+                val player2: Player = AskHelper.whichAI("AI player 2").askForBoats
+                contestLoop(player1, player2, GameSettings.contestGames)
+            }
+        }
+        if(AskHelper.returnToMenu) mainLoop()
     }
 }

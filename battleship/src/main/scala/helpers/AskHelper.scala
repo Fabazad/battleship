@@ -117,5 +117,11 @@ object AskHelper {
         }
     }
 
+    def returnToMenu(): Boolean = {
+        println("Return to menu (Enter) ? Or (Q)uit ?")
+        val userInput: String = getUserInput.toUpperCase()
+        userInput != "Q"
+    }
+
     def getUserInput(): String = readLine.trim
 }
