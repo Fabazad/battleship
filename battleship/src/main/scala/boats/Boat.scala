@@ -4,12 +4,13 @@ import game.GameSettings
 import helpers.DisplayHelper
 import players._
 import grid._
-/**
-*
-*
-*/
+import scala.annotation.tailrec
+
 case class Boat(cells: List[Cell]) {
+
+    
     def isCrossingBoat(otherBoats: List[Boat]): Boolean = {
+        @tailrec
         def isCrossingBoatBis(cells: List[Cell], otherBoats: List[Boat]): Boolean = {
             cells match {
                 case Nil => false
@@ -40,8 +41,9 @@ case class Boat(cells: List[Cell]) {
 object Boat {
     def apply(size: Int, headx: Int, heady: Int, direction: String): Boat = {
         val gridSize: Int = GameSettings.gridSize
-        val cells: List[Cell] = Cell.createCellList(size, size, direction, headx, heady)
+        val cells: List[Cell] = Cell.createCellList(size, direction, headx, heady)
         val cellOut: Boolean = cells.filter((c) => c.isOutGrid).length > 0
         Boat(cells)
     }
 }
+

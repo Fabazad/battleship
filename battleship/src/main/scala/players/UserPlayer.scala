@@ -69,6 +69,6 @@ extends Player(name, boats, sentShots, receivedShots){
 
 object UserPlayer {
     def apply(name: String): UserPlayer = {
-        new UserPlayer(name)
+        UserPlayer(name)
     }
 }

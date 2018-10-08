@@ -5,6 +5,7 @@ import helpers._
 import game._
 import scala.util.Random
 import grid._
+import scala.annotation.tailrec
 
 case class AIPlayer(
     override val name: String,

@@ -1,6 +1,7 @@
 package grid
 
 import game.GameSettings
+import scala.annotation.tailrec
 
 case class Pos(val x: Int, val y: Int){
     def equal(pos: Pos): Boolean = {
@@ -34,13 +35,14 @@ case class Pos(val x: Int, val y: Int){
 
 object Pos {
     def allPos(): List[Pos] = {
-        def allPosBis(x: Int, y: Int): List[Pos] = {
-            if(y == 0) Nil
-            else if(x > 0) Pos(x,y)::allPosBis(x-1, y)
-            else allPosBis(GameSettings.gridSize, y-1)
+        @tailrec
+        def allPosBis(x: Int, y: Int, res: List[Pos]): List[Pos] = {
+            if(y == 0) res
+            else if(x > 0) allPosBis(x-1, y, Pos(x,y)::res)
+            else allPosBis(GameSettings.gridSize, y-1, res)
             
         }
-        allPosBis(GameSettings.gridSize, GameSettings.gridSize)
+        allPosBis(GameSettings.gridSize, GameSettings.gridSize, List())
     }
 
     def posAround(pos: Pos): List[Pos] = {

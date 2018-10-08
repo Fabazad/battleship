@@ -5,6 +5,7 @@ import game.GameSettings
 import boats.Boat
 import scala.util.matching.Regex
 import grid._
+import scala.annotation.tailrec
 
 object AskHelper {
     
@@ -18,6 +19,7 @@ object AskHelper {
         checkIntWithSize(getUserInput, boatHeadY, size)
     }
 
+    @tailrec
     def boatDirection(size: Int): String = {
         println("Ship of size : " + size + ". Choose a direction : (T)op, (L)eft, (B)ottom, (R)ight")
         val userInput: String = getUserInput.toUpperCase
@@ -55,6 +57,7 @@ object AskHelper {
         getUserInput.toUpperCase()
     }
 
+    @tailrec
     def userOrAI(name: String): Player = {
         println("Would you like to play with an (U)ser or with an AI with level (1), (2) or (3) ?")
         val userInput: String = getUserInput.toUpperCase
@@ -90,6 +93,7 @@ object AskHelper {
         }
     }
 
+    @tailrec
     def contestOrGame(): String = {
         println("What would you like to do ?")
         println("1) Game between user and/or AI")
@@ -107,6 +111,7 @@ object AskHelper {
         }
     }
 
+    @tailrec
     def whichAI(name: String): AIPlayer = {
         println("Which AI level for "+ name +" ? (1), (2) or (3) ?")
         val userInput: String = getUserInput

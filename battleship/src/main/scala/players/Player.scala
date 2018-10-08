@@ -5,6 +5,7 @@ import helpers._
 import scala.util.Random
 import game.GameSettings
 import grid._
+import scala.annotation.tailrec
 
 abstract class Player(val name: String, val boats: List[Boat], val sentShots: List[Shot], val receivedShots: List[Shot], val score: Int = 0) {
 
@@ -19,6 +20,7 @@ abstract class Player(val name: String, val boats: List[Boat], val sentShots: Li
     def addScore(): Player
 
     def askForBoats(): Player = {
+        @tailrec
         def askForBoatsBis(otherBoats: List[Boat], remainingBoats: List[Int]): Player = {
             remainingBoats match {
                 case Nil => {
