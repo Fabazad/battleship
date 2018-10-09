@@ -2,8 +2,7 @@ package helpers
 
 import players._
 import game._
-import boats._
-import grid._
+import board._
 import scala.annotation.tailrec
 
 /**

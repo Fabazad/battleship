@@ -1,10 +1,8 @@
 
-import helpers.DisplayHelper
-import helpers.AskHelper
+import helpers._
 import players._
-import boats.Boat
 import game._
-import grid._
+import board._
 import scala.util.Random
 import java.io._
 import scala.annotation.tailrec

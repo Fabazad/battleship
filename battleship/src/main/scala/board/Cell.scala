@@ -1,7 +1,6 @@
-package boats
+package board
 
 import game._
-import grid._
 import scala.annotation.tailrec
 
 /**

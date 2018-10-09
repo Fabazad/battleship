@@ -1,10 +1,8 @@
-package grid
+package board
 
-import boats._
 import players._
 import game._
 import scala.util.Random
-import grid._
 import scala.annotation.tailrec
 
 /**

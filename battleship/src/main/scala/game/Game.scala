@@ -2,7 +2,6 @@ package game
 
 import players.Player
 import scala.util.Random
-import grid._
 
 /**
   * The game class which is use as a state.

@@ -1,10 +1,8 @@
 package players
 
-import boats._
+import board._
 import helpers._
-import game.GameSettings
 import scala.util.Random
-import grid._
 
 /**
   * The class that represent a Player, but more precisely the player as user.

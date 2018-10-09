@@ -1,4 +1,4 @@
-package game
+package helpers
 
 /**
   * Settings of the game.

@@ -1,9 +1,7 @@
-package boats
+package board
 
-import game.GameSettings
-import helpers.DisplayHelper
+import helpers._
 import players._
-import grid._
 import scala.annotation.tailrec
 
 /**

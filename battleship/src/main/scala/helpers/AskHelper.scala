@@ -1,10 +1,8 @@
 package helpers
 
 import players._
-import game.GameSettings
-import boats.Boat
 import scala.util.matching.Regex
-import grid._
+import board._
 import scala.annotation.tailrec
 
 /**

@@ -1,10 +1,8 @@
 package players
 
-import boats._
+import board._
 import helpers._
 import scala.util.Random
-import game.GameSettings
-import grid._
 import scala.annotation.tailrec
 
 /**

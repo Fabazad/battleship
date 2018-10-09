@@ -1,6 +1,6 @@
-package grid
+package board
 
-import game.GameSettings
+import helpers.GameSettings
 import scala.annotation.tailrec
 
 /**
